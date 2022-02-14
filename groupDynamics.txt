@@ -1,0 +1,19 @@
+Group Dynamics
+
+1. What programming language is your team using for the project?
+	- We will be using Python
+
+2. How will the group communicate?  Skype? Google Hangouts?  Email?  Text messages? Something else?  It's your choice, but your must choose a technology.
+	- We will be communicating via Discord messaging and Discord voice/video chat.
+
+3. When will your team communicate?   I recommend that you adopt the concept of a Daily Standup meeting (we'll discuss this in the Week 3 lecture).  You may not need to talk every day, but you should talk together at least once per week.
+	- We will communicate every Wednesday.
+
+4. What is the URL of your team's GitHub repository?
+	- https://github.com/elenirotsides/SSW-555
+
+5. Identify the roles and responsibilities for each team member.   You'll need to fill the role of developers, testers, and someone to update the Team Report including the burn down chart and sprint retrospective. A single person is likely to have multiple roles.  For each person, identify the roles to be filled for that person.
+	- Eleni Rotsides: Developer, Tester
+	- Julio Lora: Developer, Team Report
+	- Joshua Hector: Developer, Team Report
+	(These roles may change later on when we actually begin working on the project)
