@@ -14,8 +14,6 @@ please install with:
 from datetime import datetime
 from tabulate import tabulate
 
-
-
 individuals = {}
 families = {}
 
@@ -34,6 +32,11 @@ months = {
 	"DEC":"12",
 }
 
+def birth_before_death(birthDate, deathDate):
+    # User Story 03: Birth should occur before death of an individual
+    if deathDate == "NA" or birthDate == "NA":
+        return "NA"
+    return birthDate < deathDate
 
 def eval():
 	try:
@@ -146,4 +149,5 @@ def eval():
 	file.close()
 	return
 
-eval()
+if __name__ == "__main__":
+    eval()
