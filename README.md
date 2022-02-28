@@ -25,10 +25,20 @@ pip install -r requirements.txt
 4. Run the file
 
 ```
-python3 Project3/Project3.py
+cd Project3
+python3 Project3.py
 ```
 
 5. Run the tests
+
+Depending on what directory you're currently in:
+
+```
+cd Project3
+python3 Project3.py
+```
+
+or
 
 ```
 python3 Project3/tests.py
