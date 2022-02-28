@@ -33,6 +33,20 @@ months = {
 }
 
 
+def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
+    if death_date_husb == "NA" or death_date_wife == "NA":
+        if not death_date_husb == "NA":
+            return divorce_date < death_date_husb
+        if not death_date_wife == "NA":
+            return divorce_date < death_date_wife
+        return True
+    if divorce_date == "NA":
+        return "NA"
+    if divorce_date < death_date_husb and divorce_date < death_date_wife:
+        return True
+    return False
+
+
 def birth_before_death(birthDate, deathDate):
     # User Story 03: Birth should occur before death of an individual
     if deathDate == "NA" or birthDate == "NA":
