@@ -35,6 +35,19 @@ months = {
 }
 
 
+def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
+	if death_date_husb == "NA" or death_date_wife == "NA":
+		if not death_date_husb == "NA":
+			return divorce_date < death_date_husb
+		if not death_date_wife == "NA":
+			return divorce_date < death_date_wife
+		return True
+	if divorce_date == "NA":
+		return "NA"
+	if divorce_date < death_date_husb and divorce_date < death_date_wife:
+		return True
+	return False
+	
 def eval():
 	try:
 		file = open("Project 01.ged", 'r')
@@ -146,4 +159,5 @@ def eval():
 	file.close()
 	return
 
-eval()
+if __name__ == '__main__':
+	eval()
