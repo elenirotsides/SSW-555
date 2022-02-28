@@ -14,7 +14,6 @@ please install with:
 from datetime import datetime
 from tabulate import tabulate
 
-
 individuals = {}
 families = {}
 
@@ -32,6 +31,13 @@ months = {
     "NOV": "11",
     "DEC": "12",
 }
+
+
+def birth_before_death(birthDate, deathDate):
+    # User Story 03: Birth should occur before death of an individual
+    if deathDate == "NA" or birthDate == "NA":
+        return "NA"
+    return birthDate < deathDate
 
 
 def is_birth_before_marriage(birth_date, marriage_date):
@@ -159,5 +165,5 @@ def eval():
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     eval()
