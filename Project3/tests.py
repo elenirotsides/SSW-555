@@ -6,6 +6,7 @@ Unit tests for Project3.py
 
 import unittest
 from Project3 import is_birth_before_marriage, is_divorce_before_death, birth_before_death
+from Homework4 import dateBeforeCurrent
 import datetime
 
 
@@ -87,6 +88,28 @@ class TestBirthBeforeDeath(unittest.TestCase):
         """Returns False if birth after death"""
         self.assertFalse(birth_before_death(
             datetime.date(1999, 12, 11), datetime.date(1995, 6, 11)), False)
+        
+class TestHomework4(unittest.TestCase):
+# User story 1: Dates before Current Date
+	def test_dateBeforeCurrent1(self):
+		result = Homework4.dateBeforeCurrent("31 AUG 2000")
+		self.assertTrue(result)
+
+	def test_dateBeforeCurrent2(self):
+		result = Homework4.dateBeforeCurrent("9 DEC 2025")
+		self.assertFalse(result)
+
+	def test_dateBeforeCurrent3(self):
+		result = Homework4.dateBeforeCurrent("28 FEB 1990")
+		self.assertTrue(result)
+
+	def test_dateBeforeCurrent4(self):
+		result = Homework4.dateBeforeCurrent("21 FEB 2022")
+		self.assertEqual(result, True)
+
+	def test_dateBeforeCurrent5(self):
+		result = Homework4.dateBeforeCurrent("11 MAR 2022")
+		self.assertEqual(result, False)
 
 
 if __name__ == '__main__':
