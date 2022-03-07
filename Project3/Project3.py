@@ -32,7 +32,6 @@ months = {
     "DEC": "12",
 }
 
-
 def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
     if death_date_husb == "NA" or death_date_wife == "NA":
         if not death_date_husb == "NA":
@@ -45,7 +44,6 @@ def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
     if divorce_date < death_date_husb and divorce_date < death_date_wife:
         return True
     return False
-
 
 def birth_before_death(birthDate, deathDate):
     # User Story 03: Birth should occur before death of an individual
@@ -61,6 +59,28 @@ def is_birth_before_marriage(birth_date, marriage_date):
     if marriage_date == "NA" or birth_date == "NA":
         return "NA"
     return birth_date < marriage_date
+
+def marriage_before_14(marriage_date, birth_date_husb, birth_date_wife): 
+    """Returns true if the marriage date is before the age of 14 for BOTH husband and wife"""
+    if marriage_date == "NA": 
+        return "NA"
+    if marriage_date < birth_date_husb or marriage_date < birth_date_wife: 
+        return False
+    
+    marriage_year = marriage_date.year
+    birth_year_husb = birth_date_husb.year
+    birth_year_wife = birth_date_wife.year
+    
+    if marriage_date > birth_date_husb and marriage_date > birth_date_wife: 
+        if birth_date_husb > birth_date_wife: 
+            return marriage_year - birth_year_husb > 14
+        else: 
+            return marriage_year - birth_year_wife > 14
+    # takes the minimum age of both the husband's and wife's age for comparison
+    
+    
+    
+    
 
 
 def eval():
