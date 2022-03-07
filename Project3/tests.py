@@ -1,7 +1,7 @@
 """
 Unit tests for Project3.py
 
-@author: Eleni Rotsides
+@author: Eleni Rotsides, Julio Lora
 """
 
 import unittest
@@ -61,6 +61,40 @@ class TestDivorceBeforeDeath(unittest.TestCase):
         """Returns False if the divorce happened after the death of both spouses"""
         self.assertEqual(is_divorce_before_death(
             datetime.date(1999, 8, 27), datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), False)
+
+#The following lists and objects are intended to be used for the parents_not_too_old tests since it takes a list of children as input
+Dan = {
+    "Name": "Dan",
+    "Age": 14
+    }
+Maria = {
+    "Name": "Maria",
+    "Age": 20
+    }
+John = {
+    "Name": "Maria",
+    "Age": 5
+    }
+Julia = {
+    "Name": "Maria",
+    "Age": 25
+    }
+motherChildren = [Dan, Maria, John]
+fatherChildren = [John, Julia]
+
+class TestParentsNotTooOld(unittest.TestCase):
+    def test_mother_too_old(self):
+        """Returns False if mother is over 60 years older than the children"""
+        self.assertEqual(parents_not_too_old(motherChildren, fatherChildren, 80, 45), False)
+    def test_mother_not_too_old(self):
+        """Returns True if mother is not over 60 years older than the children"""
+        self.assertEqual(parents_not_too_old(motherChildren, fatherChildren, 50, 45), True)
+    def test_father_too_old(self):
+        """Returns False if father is over 80 years older than the children"""
+        self.assertEqual(parents_not_too_old(motherChildren, fatherChildren, 45, 90), False)
+    def test_father_not_too_old(self):
+        """Returns True if father is not over 80 years older than the children"""
+        self.assertEqual(parents_not_too_old(motherChildren, fatherChildren, 50, 45), True)
 
 class TestBirthBeforeDeath(unittest.TestCase):
     def test_no_death(self):
