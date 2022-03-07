@@ -64,24 +64,19 @@ def marriage_before_14(marriage_date, birth_date_husb, birth_date_wife):
     """Returns true if the marriage date is before the age of 14 for BOTH husband and wife"""
     if marriage_date == "NA": 
         return "NA"
+    # if the marriage date is before the birth dates of both the husband and wife, return False
     if marriage_date < birth_date_husb or marriage_date < birth_date_wife: 
         return False
     
+    # have the year of the birth dates allocated to named variables
     marriage_year = marriage_date.year
     birth_year_husb = birth_date_husb.year
     birth_year_wife = birth_date_wife.year
     
+    # checks to see that the marriage is after the birthdate of the husband and wife all at the same time
     if marriage_date > birth_date_husb and marriage_date > birth_date_wife: 
-        if birth_date_husb > birth_date_wife: 
-            return marriage_year - birth_year_husb > 14
-        else: 
-            return marriage_year - birth_year_wife > 14
-    # takes the minimum age of both the husband's and wife's age for comparison
+        return (marriage_year - birth_year_wife > 14) & (marriage_year - birth_year_husb > 14)
     
-    
-    
-    
-
 
 def eval():
     try:
