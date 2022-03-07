@@ -63,6 +63,16 @@ def is_birth_before_marriage(birth_date, marriage_date):
     return birth_date < marriage_date
 
 
+def parents_not_too_old(motherChildren, fatherChildren, mother_age, father_age):
+    for child in motherChildren:
+        if (mother_age - child["Age"]) > 60:
+            return False
+    for child in fatherChildren:
+        if (father_age - child["Age"]) > 80:
+            return False
+    return True
+
+
 def eval():
     try:
         file = open("Project 01.ged", 'r')
