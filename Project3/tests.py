@@ -5,7 +5,7 @@ Unit tests for Project3.py
 """
 
 import unittest
-from Project3 import is_birth_before_marriage, is_divorce_before_death, birth_before_death
+from Project3 import *
 from Homework4 import dateBeforeCurrent
 import datetime
 
@@ -62,7 +62,6 @@ class TestDivorceBeforeDeath(unittest.TestCase):
         self.assertEqual(is_divorce_before_death(
             datetime.date(1999, 8, 27), datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), False)
 
-
 class TestBirthBeforeDeath(unittest.TestCase):
     def test_no_death(self):
         """Returns NA if individual is not dead"""
@@ -89,7 +88,33 @@ class TestBirthBeforeDeath(unittest.TestCase):
         self.assertFalse(birth_before_death(
             datetime.date(1999, 12, 11), datetime.date(1995, 6, 11)), False)
 
+class TestMarriageBefore14(unittest.TestCase):
+    def test_marriage_same_date(self):
+        """Returns False if the marriage is the same date as the wife and husband birth date"""
+        self.assertFalse(marriage_before_14(
+            datetime.date(1999, 8, 27), datetime.date(1999, 8, 27), datetime.date(1999, 8, 27)), False)
 
+    def test_husband_birth_before_marriage(self):
+        """Returns False if the husband is married before the age of 14"""
+        self.assertEqual(marriage_before_14(
+            datetime.date(2008, 8, 1), datetime.date(1999, 1, 1), datetime.date(1980, 10, 27)), False)
+
+    def test_wife_birth_before_marriage(self):
+        """Returns True if the divorce happened before the death of the husband"""
+        self.assertEqual(marriage_before_14(
+            datetime.date(2010, 6, 11), datetime.date(1990, 5, 20), datetime.date(1997, 12, 25)), False)
+        
+    def test_marriage_valid(self):
+        """Returns True if the divorce happened before the death of the wife"""
+        self.assertEqual(marriage_before_14(
+            datetime.date(2015, 2, 20), datetime.date(1980, 10, 10), datetime.date(1990, 9, 27)), True)
+
+    def test_no_marriage(self):
+        """Returns False if the divorce happened after the death of both spouses"""
+        self.assertEqual(marriage_before_14(
+            "NA", datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), "NA")
+
+        
 class TestHomework4(unittest.TestCase):
     # User story 1: Dates before Current Date
     def test_dateBeforeCurrent1(self):
