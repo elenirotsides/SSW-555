@@ -1,8 +1,7 @@
 """
 Names: Dave Taveras, Eleni Rotsides, Joshua Hector, Julio Lora
 Pledge: I pledge my honor that I have abided by the Stevens Honor System
-Date: Feb 21st, 2022
-Assignment: Project 3
+Assignment: GEDCOM Project
 Professor: Ens
 Course: SSW 555 Agile Methods
 
@@ -11,6 +10,7 @@ please install with:
 	pip3 install tabulate
 """
 
+import userStories
 from datetime import datetime
 from tabulate import tabulate
 
@@ -32,65 +32,10 @@ months = {
     "DEC": "12",
 }
 
-def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
-    if death_date_husb == "NA" or death_date_wife == "NA":
-        if not death_date_husb == "NA":
-            return divorce_date < death_date_husb
-        if not death_date_wife == "NA":
-            return divorce_date < death_date_wife
-        return True
-    if divorce_date == "NA":
-        return "NA"
-    if divorce_date < death_date_husb and divorce_date < death_date_wife:
-        return True
-    return False
-
-def birth_before_death(birthDate, deathDate):
-    # User Story 03: Birth should occur before death of an individual
-    if deathDate == "NA" or birthDate == "NA":
-        return "NA"
-    return birthDate < deathDate
-
-
-def is_birth_before_marriage(birth_date, marriage_date):
-    """Returns True if birth is before marriage, False if it isn't, and NA if marriage doesn't exist"""
-
-    # assuming birth_date and marriage_date are both given in the correct format...
-    if marriage_date == "NA" or birth_date == "NA":
-        return "NA"
-    return birth_date < marriage_date
-
-def marriage_before_14(marriage_date, birth_date_husb, birth_date_wife): 
-    """Returns true if the marriage date is before the age of 14 for BOTH husband and wife"""
-    if marriage_date == "NA": 
-        return "NA"
-    # if the marriage date is before the birth dates of both the husband and wife, return False
-    if marriage_date < birth_date_husb or marriage_date < birth_date_wife: 
-        return False
-    
-    # have the year of the birth dates allocated to named variables
-    marriage_year = marriage_date.year
-    birth_year_husb = birth_date_husb.year
-    birth_year_wife = birth_date_wife.year
-    
-    # checks to see that the marriage is after the birthdate of the husband and wife all at the same time
-    if marriage_date > birth_date_husb and marriage_date > birth_date_wife: 
-        return (marriage_year - birth_year_wife > 14) & (marriage_year - birth_year_husb > 14)
-    
-
-def parents_not_too_old(motherChildren, fatherChildren, mother_age, father_age):
-    for child in motherChildren:
-        if (mother_age - child["Age"]) > 60:
-            return False
-    for child in fatherChildren:
-        if (father_age - child["Age"]) > 80:
-            return False
-    return True
-
 
 def eval():
     try:
-        file = open("Project 01.ged", 'r')
+        file = open("input.ged", 'r')
     except:
         print("Could not open file!")
         exit()
@@ -119,7 +64,8 @@ def eval():
                 args[i] = id_
 
                 if individuals.get(id_) == None:
-                    individuals[id_] = {"Alive": True, "Death": "NA"}
+                    individuals[id_] = {"ID":"NA", "Name":"NA", "Gender":"NA", "Birthday":"NA",
+                   "Age":"NA", "Alive":True, "Death":"NA", "Child":"NA", "Spouse":"NA"}
             elif args[i] == "FAM":
                 fid = tag
                 tag = args[i]
@@ -139,8 +85,17 @@ def eval():
             flag = tag
 
         if tag == "DATE":
+            #check that the date provided is before the current date
+            if userStories.dateBeforeCurrent(args[0] + " " + args[1] + " " + args[2]) == False:
+                raise ValueError("Error: Dates provided must be from before current date.")
+
             date = args[2] + "-" + months[args[1]] + "-" + args[0]
             if flag == "DEAT":
+                
+                #Check if the death date comes after birthday
+                if userStories.birth_before_death(individuals[id_]["Birthday"], date) == False:
+                    raise ValueError("Error: Death cannot come before birth.")
+
                 individuals[id_]["Death"] = date
                 flag = ""
             if flag == "BIRT":
@@ -149,8 +104,28 @@ def eval():
                 individuals[id_]["Birthday"] = date
                 flag = ""
             if flag == "MARR":
+                # check if both spouses were born before marriage date
+                if userStories.is_birth_before_marriage(individuals[families[fid]["Husband ID"]]["Birthday"], date) == False:
+                    raise ValueError("Error: Husband cannot be born after marriage.")
+
+                if userStories.is_birth_before_marriage(individuals[families[fid]["Wife ID"]]["Birthday"], date) == False:
+                    raise ValueError("Error: Wife cannot be born after marriage.")
+                
+                """
+                if family is married check if there is a death, if so check that
+                the marriage comes first
+                """
+                if individuals[families[fid]["Husband ID"]]["Alive"] == False:
+                    if userStories.marriageBeforeDeath(date, individuals[families[fid]["Husband ID"]]["Death"]) == False:
+                        raise ValueError("Error: Marriage must come before husband's death.")
+
+                    if userStories.marriageBeforeDeath(date, individuals[families[fid]["Wife ID"]]["Death"]) == False:
+                        raise ValueError("Error: Marriage must come before wife's death.")
+                
+
                 families[fid]["Married"] = date
                 flag = ""
+
             if flag == "DIV":
                 families[fid]["Divorced"] = date
                 flag = ""
@@ -180,6 +155,7 @@ def eval():
         if tag == "CHIL":
             families[fid]["Children"] += args
 
+    #Print table of indivduals and Families
     individuals_table = []
     ind_headers = ["ID", "Name", "Gender", "Birthday",
                    "Age", "Alive", "Death", "Child", "Spouse"]
