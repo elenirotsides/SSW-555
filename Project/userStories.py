@@ -36,6 +36,26 @@ months = {
 				"Dec":12
 				}
 
+def compareDates(date1, date2):
+	#Creating marriage date from substrings of m_date
+	d1_tokens = date1.split("-")
+
+	#Creating death date from substrings of d_date
+	d2_tokens = date2.split("-")
+
+	if d1_tokens[0] < d2_tokens[0]:
+		return True
+	if d1_tokens[0] == d2_tokens[0]:
+		#If years are equal check months
+		if d1_tokens[1] < d2_tokens[1]:
+			return True
+		if d1_tokens[1] == d2_tokens[1]:
+			#If months are equal check days
+			if d1_tokens[2] <= d2_tokens[2]:
+				#Check days
+				return True
+
+
 """
 ****************************************************************
 User Story 01: datesBeforeCurrent
@@ -155,18 +175,18 @@ User Story 06: Divorce Before Death
 Author: Julio Lora
 """
 def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
-    if death_date_husb == "NA" or death_date_wife == "NA":
-        if not death_date_husb == "NA":
-            return divorce_date < death_date_husb
-        if not death_date_wife == "NA":
-            return divorce_date < death_date_wife
-        return True
-    if divorce_date == "NA":
-        return "NA"
-    if divorce_date < death_date_husb and divorce_date < death_date_wife:
-        return True
-    return False
+	if(divorce_date == "NA"):
+		raise ValueError("Error: Divorce date provided should not be NA.")
 
+	if death_date_husb == "NA" or death_date_wife == "NA":
+		if not death_date_husb == "NA":
+			return compareDates(divorce_date, death_date_husb)
+		if not death_date_wife == "NA":
+			return compareDates(divorce_date, death_date_wife)
+		return True
+	if compareDates(divorce_date, death_date_husb) and compareDates(divorce_date, death_date_wife):
+		return True
+	return False
 
 
 """
