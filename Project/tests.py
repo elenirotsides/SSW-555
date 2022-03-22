@@ -172,32 +172,39 @@ User Story 06: Divorce Before Death
 Author: Julio Lora
 """
 
+"2000-03-24"
+
 
 class test_divorceBeforeDeath(unittest.TestCase):
     def test_no_death(self):
         """Returns True if both spouses have not passed away"""
         self.assertEqual(userStories.is_divorce_before_death(
-            datetime.date(1999, 8, 27), "NA", "NA"), True)
+            "1999-08-27", "NA", "NA"), True)
 
     def test_divorce_before(self):
         """Returns True if the divorce happened before the death of both spouses"""
         self.assertEqual(userStories.is_divorce_before_death(
-            datetime.date(1999, 8, 27), datetime.date(2005, 8, 27), datetime.date(2010, 8, 27)), True)
+            "1999-08-27", "2005-08-27", "2010-08-27"), True)
 
     def test_husband_passed(self):
         """Returns True if the divorce happened before the death of the husband"""
         self.assertEqual(userStories.is_divorce_before_death(
-            datetime.date(1999, 8, 27), datetime.date(1999, 9, 27), "NA"), True)
+            "1999-08-27", "1999-09-27", "NA"), True)
 
     def test_wife_passed(self):
         """Returns True if the divorce happened before the death of the wife"""
         self.assertEqual(userStories.is_divorce_before_death(
-            datetime.date(1999, 8, 27), "NA", datetime.date(1999, 9, 27)), True)
+            "1999-08-27", "NA", "1999-09-27"), True)
 
     def test_death_before(self):
         """Returns False if the divorce happened after the death of both spouses"""
         self.assertEqual(userStories.is_divorce_before_death(
-            datetime.date(1999, 8, 27), datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), False)
+            "1999-08-27", "1999-05-27", "1999-04-27"), False)
+
+    def test_bad_input(self):
+        """Returns Error if divorce date is not provided"""
+        self.assertRaises(ValueError, userStories.is_divorce_before_death,
+                          "NA", datetime.date(1999, 8, 27), datetime.date(1999, 5, 27))
 
 
 """
