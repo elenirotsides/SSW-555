@@ -64,8 +64,8 @@ def eval():
                 args[i] = id_
 
                 if individuals.get(id_) == None:
-                    individuals[id_] = {"ID":"NA", "Name":"NA", "Gender":"NA", "Birthday":"NA",
-                   "Age":"NA", "Alive":True, "Death":"NA", "Child":"NA", "Spouse":"NA"}
+                    individuals[id_] = {"ID": "NA", "Name": "NA", "Gender": "NA", "Birthday": "NA",
+                                        "Age": "NA", "Alive": True, "Death": "NA", "Child": "NA", "Spouse": "NA"}
             elif args[i] == "FAM":
                 fid = tag
                 tag = args[i]
@@ -85,14 +85,15 @@ def eval():
             flag = tag
 
         if tag == "DATE":
-            #check that the date provided is before the current date
+            # check that the date provided is before the current date
             if userStories.dateBeforeCurrent(args[0] + " " + args[1] + " " + args[2]) == False:
-                raise ValueError("Error: Dates provided must be from before current date.")
+                raise ValueError(
+                    "Error: Dates provided must be from before current date.")
 
             date = args[2] + "-" + months[args[1]] + "-" + args[0]
             if flag == "DEAT":
-                
-                #Check if the death date comes after birthday
+
+                # Check if the death date comes after birthday
                 if userStories.birth_before_death(individuals[id_]["Birthday"], date) == False:
                     raise ValueError("Error: Death cannot come before birth.")
 
@@ -106,22 +107,25 @@ def eval():
             if flag == "MARR":
                 # check if both spouses were born before marriage date
                 if userStories.is_birth_before_marriage(individuals[families[fid]["Husband ID"]]["Birthday"], date) == False:
-                    raise ValueError("Error: Husband cannot be born after marriage.")
+                    raise ValueError(
+                        "Error: Husband cannot be born after marriage.")
 
                 if userStories.is_birth_before_marriage(individuals[families[fid]["Wife ID"]]["Birthday"], date) == False:
-                    raise ValueError("Error: Wife cannot be born after marriage.")
-                
+                    raise ValueError(
+                        "Error: Wife cannot be born after marriage.")
+
                 """
                 if family is married check if there is a death, if so check that
                 the marriage comes first
                 """
                 if individuals[families[fid]["Husband ID"]]["Alive"] == False:
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Husband ID"]]["Death"]) == False:
-                        raise ValueError("Error: Marriage must come before husband's death.")
+                        raise ValueError(
+                            "Error: Marriage must come before husband's death.")
 
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Wife ID"]]["Death"]) == False:
-                        raise ValueError("Error: Marriage must come before wife's death.")
-                
+                        raise ValueError(
+                            "Error: Marriage must come before wife's death.")
 
                 families[fid]["Married"] = date
                 flag = ""
@@ -155,7 +159,7 @@ def eval():
         if tag == "CHIL":
             families[fid]["Children"] += args
 
-    #Print table of indivduals and Families
+    # Print table of individuals and Families
     individuals_table = []
     ind_headers = ["ID", "Name", "Gender", "Birthday",
                    "Age", "Alive", "Death", "Child", "Spouse"]
