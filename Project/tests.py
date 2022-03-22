@@ -10,23 +10,23 @@ import unittest
 import userStories
 import datetime
 
-#The following lists and objects are intended to be used for the parents_not_too_old tests since it takes a list of children as input
+# The following lists and objects are intended to be used for the parents_not_too_old tests since it takes a list of children as input
 Dan = {
     "Name": "Dan",
     "Age": 14
-    }
+}
 Maria = {
     "Name": "Maria",
     "Age": 20
-    }
+}
 John = {
     "Name": "Maria",
     "Age": 5
-    }
+}
 Julia = {
     "Name": "Maria",
     "Age": 25
-    }
+}
 motherChildren = [Dan, Maria, John]
 fatherChildren = [John, Julia]
 
@@ -36,6 +36,8 @@ fatherChildren = [John, Julia]
 User Story 01: datesBeforeCurrent
 Author: Dave Taveras
 """
+
+
 class test_dateBeforeCurrent(unittest.TestCase):
     # User story 1: Dates before Current Date
     def test_dateBeforeCurrent1(self):
@@ -56,8 +58,7 @@ class test_dateBeforeCurrent(unittest.TestCase):
 
     def test_dateBeforeCurrent5(self):
         result = userStories.dateBeforeCurrent("11 MAR 2022")
-        self.assertEqual(result, False)
-
+        self.assertEqual(result, True)
 
 
 """
@@ -65,6 +66,8 @@ class test_dateBeforeCurrent(unittest.TestCase):
 User Story 02: Birth Before Marriage
 Author: Eleni Rotsides
 """
+
+
 class test_birthBeforeMarriage(unittest.TestCase):
     def test_no_marriage(self):
         """Returns NA if marriage doesn't exist"""
@@ -88,8 +91,8 @@ class test_birthBeforeMarriage(unittest.TestCase):
 
     def test_nothing_is_given(self):
         """Returns NA if both arguments are NA"""
-        self.assertEqual(userStories.is_birth_before_marriage("NA", "NA"), "NA")
-
+        self.assertEqual(
+            userStories.is_birth_before_marriage("NA", "NA"), "NA")
 
 
 """
@@ -97,6 +100,8 @@ class test_birthBeforeMarriage(unittest.TestCase):
 User Story 03: Birth Before Death
 Author: Joshua Hector
 """
+
+
 class test_birthBeforeDeath(unittest.TestCase):
     def test_no_death(self):
         """Returns NA if individual is not dead"""
@@ -124,12 +129,13 @@ class test_birthBeforeDeath(unittest.TestCase):
             datetime.date(1999, 12, 11), datetime.date(1995, 6, 11)), False)
 
 
-
 """
 ****************************************************************
 User Story 05: Marriage Before Death
 Author: Dave Taveras
 """
+
+
 class test_marriageBeforeDeath(unittest.TestCase):
     def test_marriageBeforeDeath1(self):
         result = userStories.marriageBeforeDeath("2000-03-24", "2000-03-23")
@@ -152,12 +158,12 @@ class test_marriageBeforeDeath(unittest.TestCase):
         self.assertEqual(result, False)
 
     def test_marriageBeforeDeath6(self):
-        self.assertRaises(ValueError, userStories.marriageBeforeDeath, "NA", "2000-03-23")
+        self.assertRaises(
+            ValueError, userStories.marriageBeforeDeath, "NA", "2000-03-23")
 
     def test_marriageBeforeDeath7(self):
         result = userStories.marriageBeforeDeath("1995-09-15", "NA")
         self.assertEqual(result, True)
-
 
 
 """
@@ -165,6 +171,8 @@ class test_marriageBeforeDeath(unittest.TestCase):
 User Story 06: Divorce Before Death
 Author: Julio Lora
 """
+
+
 class test_divorceBeforeDeath(unittest.TestCase):
     def test_no_death(self):
         """Returns True if both spouses have not passed away"""
@@ -192,12 +200,13 @@ class test_divorceBeforeDeath(unittest.TestCase):
             datetime.date(1999, 8, 27), datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), False)
 
 
-
 """
 ****************************************************************
 User Story 10: Marriage Before Age of 14
 Author: Joshua Hector
 """
+
+
 class test_marriageBefore14(unittest.TestCase):
     def test_marriage_same_date(self):
         """Returns False if the marriage is the same date as the wife and husband birth date"""
@@ -213,7 +222,7 @@ class test_marriageBefore14(unittest.TestCase):
         """Returns True if the divorce happened before the death of the husband"""
         self.assertEqual(userStories.marriage_before_14(
             datetime.date(2010, 6, 11), datetime.date(1990, 5, 20), datetime.date(1997, 12, 25)), False)
-        
+
     def test_marriage_valid(self):
         """Returns True if the divorce happened before the death of the wife"""
         self.assertEqual(userStories.marriage_before_14(
@@ -225,25 +234,33 @@ class test_marriageBefore14(unittest.TestCase):
             "NA", datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), "NA")
 
 
-
 """
 ****************************************************************
 User Story 12: Parents are not too old
 Author: Julio Lora
 """
+
+
 class test_parentsNotTooOld(unittest.TestCase):
     def test_mother_too_old(self):
         """Returns False if mother is over 60 years older than the children"""
-        self.assertEqual(userStories.parents_not_too_old(motherChildren, fatherChildren, 80, 45), False)
+        self.assertEqual(userStories.parents_not_too_old(
+            motherChildren, fatherChildren, 80, 45), False)
+
     def test_mother_not_too_old(self):
         """Returns True if mother is not over 60 years older than the children"""
-        self.assertEqual(userStories.parents_not_too_old(motherChildren, fatherChildren, 50, 45), True)
+        self.assertEqual(userStories.parents_not_too_old(
+            motherChildren, fatherChildren, 50, 45), True)
+
     def test_father_too_old(self):
         """Returns False if father is over 80 years older than the children"""
-        self.assertEqual(userStories.parents_not_too_old(motherChildren, fatherChildren, 45, 90), False)
+        self.assertEqual(userStories.parents_not_too_old(
+            motherChildren, fatherChildren, 45, 90), False)
+
     def test_father_not_too_old(self):
         """Returns True if father is not over 80 years older than the children"""
-        self.assertEqual(userStories.parents_not_too_old(motherChildren, fatherChildren, 50, 45), True)
+        self.assertEqual(userStories.parents_not_too_old(
+            motherChildren, fatherChildren, 50, 45), True)
 
 
 if __name__ == '__main__':
