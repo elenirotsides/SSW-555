@@ -295,7 +295,7 @@ class TestLessThan150(unittest.TestCase):
             "1999-6-15", "2022-2-20", "NA"), True)
 
     def test_current_not_less_than_150(self):
-        """Returns false if current date is not less than 150 years"""
+        """Returns false if current date is not less than 150 years after birth date"""
         self.assertEqual(userStories.is_less_than_150(
             "1800-6-15", "2022-2-20", "NA"), False)
 
