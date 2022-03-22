@@ -1,5 +1,7 @@
 # SSW-555
 
+[![Run Tests](https://github.com/elenirotsides/SSW-555/actions/workflows/ci.yml/badge.svg)](https://github.com/elenirotsides/SSW-555/actions/workflows/ci.yml)
+
 ## Running the Project
 
 _Prereq: make sure you have pip installed, refer to documentation [here](https://pypi.org/project/pip/) for instructions_
