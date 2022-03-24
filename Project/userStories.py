@@ -108,10 +108,18 @@ Author: Eleni Rotsides
 def is_birth_before_marriage(birth_date, marriage_date):
     """Returns True if birth is before marriage, False if it isn't, and NA if marriage doesn't exist"""
 
+    # Dates should be in the format "YYYY-MM-DD"
+
+    # Creating birth date from substrings of birth_date
+    b_tokens = birth_date.split("-")
+
+    # Creating marriage date from substrings of marriage_date
+    m_tokens = marriage_date.split("-")
+
     # assuming birth_date and marriage_date are both given in the correct format...
     if marriage_date == "NA" or birth_date == "NA":
         return "NA"
-    return birth_date < marriage_date
+    return b_tokens[0] < m_tokens[0]
 
 
 """
@@ -245,9 +253,19 @@ Author: Eleni Rotsides
 
 
 def is_less_than_150(birth, current, death):
+    """Death should be less than 150 years after birth for dead people, and 
+    current date should be less than 150 years after birth for all living people
+    returns boolean"""
 
+    # Expects given dates to be in the format "YYYY-MM-DD"
+
+    # Creating birth date from substrings of birth
     b_tokens = birth.split("-")
+
+    # Creating current date from substrings of current
     c_tokens = current.split("-")
+
+    # Creating death date from substrings of death
     d_tokens = death.split("-")
 
     if death != "NA" and birth != "NA":
