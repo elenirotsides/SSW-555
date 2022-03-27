@@ -131,6 +131,31 @@ class test_birthBeforeDeath(unittest.TestCase):
 
 """
 ****************************************************************
+User Story 04: Marriage Before Divorce
+Author: Dave Taveras
+"""
+
+
+class test_marriageBeforeDivorce(unittest.TestCase):
+    def test_marriageBeforeDivorce1(self):
+        result = userStories.marriageBeforeDivorce("1887-09-11", "2010-01-03")
+        self.assertTrue(result)
+    def test_marriageBeforeDivorce2(self):
+        result = userStories.marriageBeforeDivorce("1970-08-30", "1956-07-13")
+        self.assertFalse(result)
+    def test_marriageBeforeDivorce3(self):
+        result = userStories.marriageBeforeDivorce("1999-02-02", "1999-02-01")
+        self.assertFalse(result)
+    def test_marriageBeforeDivorce4(self):
+        result = userStories.marriageBeforeDivorce("2005-06-04", "2008-10-09")
+        self.assertTrue(result)
+    def test_marriageBeforeDivorce5(self):
+        result = userStories.marriageBeforeDivorce("2020-03-17", "2022-12-25")
+        self.assertEqual(result, True)
+
+
+"""
+****************************************************************
 User Story 05: Marriage Before Death
 Author: Dave Taveras
 """

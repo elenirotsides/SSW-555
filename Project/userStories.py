@@ -38,10 +38,12 @@ months = {
 
 
 def compareDates(date1, date2):
-    # Creating marriage date from substrings of m_date
+	#helper function to check if date 1 comes before date 2
+
+    #create tokens from date 1
     d1_tokens = date1.split("-")
 
-    # Creating death date from substrings of d_date
+    # Create tokens from date 2
     d2_tokens = date2.split("-")
 
     if d1_tokens[0] < d2_tokens[0]:
@@ -135,6 +137,15 @@ def birth_before_death(birthDate, deathDate):
         return "NA"
     return birthDate < deathDate
 
+
+"""
+****************************************************************
+User Story 4: Marriage Before Divorce
+Author: Eleni Rotsides
+"""
+
+def marriageBeforeDivorce(marriageDate, divorceDate):
+	return compareDates(marriageDate, divorceDate)
 
 """
 ****************************************************************
@@ -274,3 +285,12 @@ def is_less_than_150(birth, current, death):
         return int(c_tokens[0]) < (150 + int(b_tokens[0]))
     else:
         return "Not enough information supplied"
+
+
+"""
+****************************************************************
+User Story 22: All ID's are Unique
+Author: Dave Taveras
+"""
+
+# Implemented in project code, when initializing dictionary entries
