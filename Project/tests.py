@@ -303,6 +303,73 @@ class TestLessThan150(unittest.TestCase):
         """Returns NA if arguments are N/A are NA"""
         self.assertEqual(userStories.is_less_than_150(
             "NA", "NA", "NA"), "Not enough information supplied")
+        
+"""
+****************************************************************
+User Story 15: Fewer than 15 siblings
+Author: Joshua Hector
+"""
+
+class TestFewerThan15Siblings(unittest.TestCase):
+    # US07
+    def test_death_less_than_150(self):
+        """Returns true if death date is less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1999-6-15", "NA", "2022-2-20"), True)
+
+    def test_death_not_less_than_150(self):
+        """Returns false if death date is not less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1800-6-15", "NA", "2022-2-20"), False)
+
+    def test_current_less_than_150(self):
+        """Returns true if current date is less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1999-6-15", "2022-2-20", "NA"), True)
+
+    def test_current_not_less_than_150(self):
+        """Returns false if current date is not less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1800-6-15", "2022-2-20", "NA"), False)
+
+    def test_nothing_is_given(self):
+        """Returns NA if arguments are N/A are NA"""
+        self.assertEqual(userStories.is_less_than_150(
+            "NA", "NA", "NA"), "Not enough information supplied")
+
+"""
+****************************************************************
+User Story 17: No marriages to descendants
+Author: Joshua Hector
+"""
+
+class TestNoMarriageDescendants(unittest.TestCase):
+    # US07
+    def test_death_less_than_150(self):
+        """Returns true if death date is less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1999-6-15", "NA", "2022-2-20"), True)
+
+    def test_death_not_less_than_150(self):
+        """Returns false if death date is not less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1800-6-15", "NA", "2022-2-20"), False)
+
+    def test_current_less_than_150(self):
+        """Returns true if current date is less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1999-6-15", "2022-2-20", "NA"), True)
+
+    def test_current_not_less_than_150(self):
+        """Returns false if current date is not less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1800-6-15", "2022-2-20", "NA"), False)
+
+    def test_nothing_is_given(self):
+        """Returns NA if arguments are N/A are NA"""
+        self.assertEqual(userStories.is_less_than_150(
+            "NA", "NA", "NA"), "Not enough information supplied")
+
 
 
 if __name__ == '__main__':
