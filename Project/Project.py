@@ -64,16 +64,25 @@ def eval():
                 args[i] = id_
 
                 if individuals.get(id_) == None:
+                    # Only create new inidividual entry if ID is not already present
+                    # Ensuring ID is unique 
                     individuals[id_] = {"ID": "NA", "Name": "NA", "Gender": "NA", "Birthday": "NA",
                                         "Age": "NA", "Alive": True, "Death": "NA", "Child": "NA", "Spouse": "NA"}
+                else:
+                    print("Error: Individual: US22:", id_, "Duplicate ID was provided")
+
             elif args[i] == "FAM":
                 fid = tag
                 tag = args[i]
                 args[i] = fid
 
                 if families.get(fid) == None:
+                    # Only create new family entry if ID is not already present
+                    # Ensuring ID is unique 
                     families[fid] = {"Children": [], "Married": "NA", "Divorced": "NA",
                                      "Husband ID": "NA", "Wife ID": "NA", "Wife Name": "NA", "Husband Name": "NA"}
+                else:
+                    print("Error: Family: US22:", fid, "Duplicate ID was provided")
 
         # check tags
         if tag == "DEAT":
@@ -87,15 +96,14 @@ def eval():
         if tag == "DATE":
             # check that the date provided is before the current date
             if userStories.dateBeforeCurrent(args[0] + " " + args[1] + " " + args[2]) == False:
-                raise ValueError(
-                    "Error: Dates provided must be from before current date.")
+                print("Error: US01: Date Provided", args[0] + " " + args[1] + " " + args[2], "is in the future to current date")
 
             date = args[2] + "-" + months[args[1]] + "-" + args[0]
             if flag == "DEAT":
 
                 # Check if the death date comes after birthday
                 if userStories.birth_before_death(individuals[id_]["Birthday"], date) == False:
-                    raise ValueError("Error: Death cannot come before birth.")
+                    print("Error: Individual: US03:", id_+":", "Death", date, "comes before Birthday", individuals[id_]["Birthday"])
 
                 individuals[id_]["Death"] = date
                 flag = ""
@@ -107,12 +115,10 @@ def eval():
             if flag == "MARR":
                 # check if both spouses were born before marriage date
                 if userStories.is_birth_before_marriage(individuals[families[fid]["Husband ID"]]["Birthday"], date) == False:
-                    raise ValueError(
-                        "Error: Husband cannot be born after marriage.")
+                    print("Error: Family: US03: Married", date, "before Husband (" + families[fid]["Husband ID"] +") Birthday", individuals[families[fid]["Husband ID"]]["Birthday"])
 
                 if userStories.is_birth_before_marriage(individuals[families[fid]["Wife ID"]]["Birthday"], date) == False:
-                    raise ValueError(
-                        "Error: Wife cannot be born after marriage.")
+                    print("Error: Family: US03: Married", date, "before Wife (" + families[fid]["Wife ID"] +") Birthday", individuals[families[fid]["Wife ID"]]["Birthday"])
 
                 """
                 if family is married check if there is a death, if so check that
@@ -120,12 +126,10 @@ def eval():
                 """
                 if individuals[families[fid]["Husband ID"]]["Alive"] == False:
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Husband ID"]]["Death"]) == False:
-                        raise ValueError(
-                            "Error: Marriage must come before husband's death.")
+                        print("Error: Family: US05: Married", date, "after Husband (" + families[fid]["Husband ID"] +") Death", individuals[families[fid]["Husband ID"]]["Death"])
 
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Wife ID"]]["Death"]) == False:
-                        raise ValueError(
-                            "Error: Marriage must come before wife's death.")
+                        print("Error: Family: US05: Married", date, "after Wife (" + families[fid]["Wife ID"] +") Death", individuals[families[fid]["Wife ID"]]["Death"])
 
                 families[fid]["Married"] = date
                 flag = ""
