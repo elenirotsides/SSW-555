@@ -143,7 +143,7 @@ def birth_before_death(birthDate, deathDate):
 """
 ****************************************************************
 User Story 4: Marriage Before Divorce
-Author: Eleni Rotsides
+Author: Dave Taveras
 """
 
 def marriageBeforeDivorce(marriageDate, divorceDate):
@@ -172,7 +172,7 @@ def marriageBeforeDeath(m_date, d_date):
     if(d_date == "NA"):
         # if person has not died then any marriage date is valid
         return True
-        
+
     return compareDates(m_date, d_date)
 
 
