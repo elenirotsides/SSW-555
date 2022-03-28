@@ -273,8 +273,19 @@ def is_less_than_150(birth, current, death):
 
 """
 ****************************************************************
-User Story 22: All ID's are Unique
+User Story 22: All ID's Are Unique
 Author: Dave Taveras
 """
 
-# Implemented in project code, when initializing dictionary entries
+def uniqueIds(id_, dict):
+	"""
+		This function iterates a dictionary to ensure that the 
+		given id is not already present
+
+		returns true if id is not found
+		returns false if id is found
+	"""
+	for key in dict:
+		if id_ == key:
+			return False;
+	return True;
