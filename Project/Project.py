@@ -63,7 +63,7 @@ def eval():
                 tag = args[i]
                 args[i] = id_
 
-                if individuals.get(id_) == None:
+                if userStories.uniqueIds(id_, individuals) == True:
                     # Only create new inidividual entry if ID is not already present
                     # Ensuring ID is unique 
                     individuals[id_] = {"ID": "NA", "Name": "NA", "Gender": "NA", "Birthday": "NA",
@@ -76,7 +76,7 @@ def eval():
                 tag = args[i]
                 args[i] = fid
 
-                if families.get(fid) == None:
+                if userStories.uniqueIds(fid, families) == True:
                     # Only create new family entry if ID is not already present
                     # Ensuring ID is unique 
                     families[fid] = {"Children": [], "Married": "NA", "Divorced": "NA",
