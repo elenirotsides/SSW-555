@@ -38,10 +38,13 @@ months = {
 
 
 def compareDates(date1, date2):
-    # Creating marriage date from substrings of m_date
+	#helper function to check if date 1 comes before date 2
+	#Dates provided must be in YYYY-MM-DD format
+
+    #create tokens from date 1
     d1_tokens = date1.split("-")
 
-    # Creating death date from substrings of d_date
+    # Create tokens from date 2
     d2_tokens = date2.split("-")
 
     if d1_tokens[0] < d2_tokens[0]:
@@ -55,6 +58,7 @@ def compareDates(date1, date2):
             if d1_tokens[2] <= d2_tokens[2]:
                 # Check days
                 return True
+    return False;
 
 
 """
@@ -138,6 +142,15 @@ def birth_before_death(birthDate, deathDate):
 
 """
 ****************************************************************
+User Story 4: Marriage Before Divorce
+Author: Dave Taveras
+"""
+
+def marriageBeforeDivorce(marriageDate, divorceDate):
+	return compareDates(marriageDate, divorceDate)
+
+"""
+****************************************************************
 User Story 05: Marriage Before Death
 Author: Dave Taveras
 """
@@ -160,25 +173,7 @@ def marriageBeforeDeath(m_date, d_date):
         # if person has not died then any marriage date is valid
         return True
 
-    # Creating marriage date from substrings of m_date
-    m_tokens = m_date.split("-")
-
-    # Creating death date from substrings of d_date
-    d_tokens = d_date.split("-")
-
-    if m_tokens[0] < d_tokens[0]:
-        return True
-    if m_tokens[0] == d_tokens[0]:
-        # If years are equal check months
-        if m_tokens[1] < d_tokens[1]:
-            return True
-        if m_tokens[1] == d_tokens[1]:
-            # If months are equal check days
-            if m_tokens[2] <= d_tokens[2]:
-                # Check days
-                return True
-
-    return False
+    return compareDates(m_date, d_date)
 
 
 """
@@ -274,3 +269,23 @@ def is_less_than_150(birth, current, death):
         return int(c_tokens[0]) < (150 + int(b_tokens[0]))
     else:
         return "Not enough information supplied"
+
+
+"""
+****************************************************************
+User Story 22: All ID's Are Unique
+Author: Dave Taveras
+"""
+
+def uniqueIds(id_, dict):
+	"""
+		This function iterates a dictionary to ensure that the 
+		given id is not already present
+
+		returns true if id is not found
+		returns false if id is found
+	"""
+	for key in dict:
+		if id_ == key:
+			return False;
+	return True;
