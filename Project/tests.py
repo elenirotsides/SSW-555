@@ -311,31 +311,27 @@ Author: Joshua Hector
 """
 
 class TestFewerThan15Siblings(unittest.TestCase):
-    # US07
-    def test_death_less_than_150(self):
-        """Returns true if death date is less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1999-6-15", "NA", "2022-2-20"), True)
+    # US15
+    families_dict = { 
+        "family1": {
+            "Children": ["I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10", "I11", "I12", "I13", "I14", "I15", "I16", "I17"], 
+            "Married": "NA"
+        },
+        "family2": {
+            "Children": ["I1", "I2", "I3"], 
+            "Married": "NA"
+        }
+    }
+    # famiies[fid] = {"Children": [], "Married": "NA", "Divorced": "NA",
+    #                                  "Husband ID": "NA", "Wife ID": "NA", "Wife Name": "NA", "Husband Name": "NA"}
+    
+    def test_fewer_than_15(self):
+        """Returns true if the amount of children in a family is less than 15"""
+        self.assertEqual(userStories.fewer_than_15_siblings(TestFewerThan15Siblings.families_dict, "family2"), True)
 
-    def test_death_not_less_than_150(self):
-        """Returns false if death date is not less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1800-6-15", "NA", "2022-2-20"), False)
-
-    def test_current_less_than_150(self):
-        """Returns true if current date is less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1999-6-15", "2022-2-20", "NA"), True)
-
-    def test_current_not_less_than_150(self):
-        """Returns false if current date is not less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1800-6-15", "2022-2-20", "NA"), False)
-
-    def test_nothing_is_given(self):
-        """Returns NA if arguments are N/A are NA"""
-        self.assertEqual(userStories.is_less_than_150(
-            "NA", "NA", "NA"), "Not enough information supplied")
+    def test_more_than_15(self):
+        """Returns false if the amount of children in a family is more than 15"""
+        self.assertEqual(userStories.fewer_than_15_siblings(TestFewerThan15Siblings.families_dict, "family1"), False)
 
 """
 ****************************************************************
@@ -344,33 +340,35 @@ Author: Joshua Hector
 """
 
 class TestNoMarriageDescendants(unittest.TestCase):
-    # US07
-    def test_death_less_than_150(self):
-        """Returns true if death date is less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1999-6-15", "NA", "2022-2-20"), True)
+    # US17
+    
+    families_dict = { 
+        "family1": {
+            "Children": ["I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10", "I11", "I12", "I13", "I14", "I15", "I16", "I17"], 
+            "Married": "NA",
+            "Wife ID": "I20",
+            "Husband ID": "I6"
+        },
+    }
+    
+    families_dict_true = { 
+        "family1": {
+            "Children": ["I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10", "I11", "I12", "I13", "I14", "I15", "I16", "I17"], 
+            "Married": "NA",
+            "Wife ID": "I20",
+            "Husband ID": "I21"
+        },
+    }
+    
+    def test_no_marriage_descendants(self):
+        """Returns true if there are no families that have no marriage to descendants"""
+        self.assertEqual(userStories
+                    .no_marriage_to_descendants(TestNoMarriageDescendants.families_dict_true), True)
 
-    def test_death_not_less_than_150(self):
-        """Returns false if death date is not less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1800-6-15", "NA", "2022-2-20"), False)
-
-    def test_current_less_than_150(self):
-        """Returns true if current date is less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1999-6-15", "2022-2-20", "NA"), True)
-
-    def test_current_not_less_than_150(self):
-        """Returns false if current date is not less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1800-6-15", "2022-2-20", "NA"), False)
-
-    def test_nothing_is_given(self):
-        """Returns NA if arguments are N/A are NA"""
-        self.assertEqual(userStories.is_less_than_150(
-            "NA", "NA", "NA"), "Not enough information supplied")
-
-
+    def test_marriage_descendants(self):
+        """Returns false if there are families that have a marriage to descendants"""
+        self.assertEqual(userStories
+                    .no_marriage_to_descendants(TestNoMarriageDescendants.families_dict), False)
 
 if __name__ == '__main__':
     unittest.main()
