@@ -269,6 +269,45 @@ def is_less_than_150(birth, current, death):
         return int(c_tokens[0]) < (150 + int(b_tokens[0]))
     else:
         return "Not enough information supplied"
+    
+"""
+****************************************************************
+User Story 15: Fewer than 15 siblings
+Author: Joshua Hector
+"""
+
+def fewer_than_15_siblings(families_dict, family_id):
+    """Returns true if the amount of siblings in a family is less than 15."""
+    # family_list = []
+    family = families_dict.get(family_id)
+    
+    # for fam in family["Children"]:
+    #     if len(fam) >= 15:
+    #         family_list.append(fam)
+            
+    if len(family["Children"]) > 15:
+        return False
+    else:
+        return True
+
+"""
+****************************************************************
+User Story 17: No marriages to descendants
+Author: Joshua Hector
+"""
+
+def no_marriage_to_descendants(families_dict):
+    """Returns True if there are no parents that are married to their descendants."""
+    wrong_parent_marry = []
+
+    for fam, value in families_dict.items():
+        if (families_dict[fam]["Wife ID"] in families_dict[fam]["Children"]) or (families_dict[fam]["Husband ID"] in families_dict[fam]["Children"]):
+            wrong_parent_marry.append(fam)
+                
+    if len(wrong_parent_marry) > 0:
+        return False
+    else: 
+        return True
 
 
 """
