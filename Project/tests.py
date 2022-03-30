@@ -30,6 +30,11 @@ Julia = {
 motherChildren = [Dan, Maria, John]
 fatherChildren = [John, Julia]
 
+# The following dictionary objects are intended to be used for US22: uniqueIds
+
+dict1 = {"i1":"", "i2":"", "i3":""}
+dict2 = {"i4":"", "i5":""}
+dict3 = {"i6":""}
 
 """
 ****************************************************************
@@ -131,6 +136,31 @@ class test_birthBeforeDeath(unittest.TestCase):
 
 """
 ****************************************************************
+User Story 04: Marriage Before Divorce
+Author: Dave Taveras
+"""
+
+
+class test_marriageBeforeDivorce(unittest.TestCase):
+    def test_marriageBeforeDivorce1(self):
+        result = userStories.marriageBeforeDivorce("1887-09-11", "2010-01-03")
+        self.assertTrue(result)
+    def test_marriageBeforeDivorce2(self):
+        result = userStories.marriageBeforeDivorce("1970-08-30", "1956-07-13")
+        self.assertFalse(result)
+    def test_marriageBeforeDivorce3(self):
+        result = userStories.marriageBeforeDivorce("1999-02-02", "1999-02-01")
+        self.assertFalse(result)
+    def test_marriageBeforeDivorce4(self):
+        result = userStories.marriageBeforeDivorce("2005-06-04", "2008-10-09")
+        self.assertTrue(result)
+    def test_marriageBeforeDivorce5(self):
+        result = userStories.marriageBeforeDivorce("2020-03-17", "2022-12-25")
+        self.assertEqual(result, True)
+
+
+"""
+****************************************************************
 User Story 05: Marriage Before Death
 Author: Dave Taveras
 """
@@ -172,8 +202,6 @@ User Story 06: Divorce Before Death
 Author: Julio Lora
 """
 
-"2000-03-24"
-
 
 class test_divorceBeforeDeath(unittest.TestCase):
     def test_no_death(self):
@@ -205,6 +233,41 @@ class test_divorceBeforeDeath(unittest.TestCase):
         """Returns Error if divorce date is not provided"""
         self.assertRaises(ValueError, userStories.is_divorce_before_death,
                           "NA", datetime.date(1999, 8, 27), datetime.date(1999, 5, 27))
+
+
+"""
+****************************************************************
+User Story 7: Less than 150 years old
+Author: Eleni Rotsides
+"""
+
+
+class TestLessThan150(unittest.TestCase):
+    # US07
+    def test_death_less_than_150(self):
+        """Returns true if death date is less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1999-6-15", "NA", "2022-2-20"), True)
+
+    def test_death_not_less_than_150(self):
+        """Returns false if death date is not less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1800-6-15", "NA", "2022-2-20"), False)
+
+    def test_current_less_than_150(self):
+        """Returns true if current date is less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1999-6-15", "2022-2-20", "NA"), True)
+
+    def test_current_not_less_than_150(self):
+        """Returns false if current date is not less than 150 years after birth date"""
+        self.assertEqual(userStories.is_less_than_150(
+            "1800-6-15", "2022-2-20", "NA"), False)
+
+    def test_nothing_is_given(self):
+        """Returns NA if arguments are N/A are NA"""
+        self.assertEqual(userStories.is_less_than_150(
+            "NA", "NA", "NA"), "Not enough information supplied")
 
 
 """
@@ -270,40 +333,101 @@ class test_parentsNotTooOld(unittest.TestCase):
             motherChildren, fatherChildren, 50, 45), True)
 
 
+
 """
 ****************************************************************
-User Story 7: Less than 150 years old
-Author: Eleni Rotsides
+User Story 22: All ID's Are Unique
+Author: Dave Taveras
 """
 
 
-class TestLessThan150(unittest.TestCase):
-    # US07
-    def test_death_less_than_150(self):
-        """Returns true if death date is less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1999-6-15", "NA", "2022-2-20"), True)
-
-    def test_death_not_less_than_150(self):
-        """Returns false if death date is not less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1800-6-15", "NA", "2022-2-20"), False)
-
-    def test_current_less_than_150(self):
-        """Returns true if current date is less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1999-6-15", "2022-2-20", "NA"), True)
-
-    def test_current_not_less_than_150(self):
-        """Returns false if current date is not less than 150 years after birth date"""
-        self.assertEqual(userStories.is_less_than_150(
-            "1800-6-15", "2022-2-20", "NA"), False)
+class test_uniqueIds(unittest.TestCase):
+    def test_uniqueIds1(self):
+        result = userStories.uniqueIds("i1", dict2)
+        self.assertTrue(result)
+    def test_uniqueIds2(self):
+        result = userStories.uniqueIds("i1", dict1)
+        self.assertFalse(result)
+    def test_uniqueIds3(self):
+        result = userStories.uniqueIds("i6", dict3)
+        self.assertEqual(result, False)
+    def test_uniqueIds4(self):
+        result = userStories.uniqueIds("i4", dict2)
+        self.assertFalse(result)
+    def test_uniqueIds5(self):
+        result = userStories.uniqueIds("i6", dict1)
+        self.assertTrue(result)
 
     def test_nothing_is_given(self):
         """Returns NA if arguments are N/A are NA"""
         self.assertEqual(userStories.is_less_than_150(
             "NA", "NA", "NA"), "Not enough information supplied")
+        
+"""
+****************************************************************
+User Story 15: Fewer than 15 siblings
+Author: Joshua Hector
+"""
 
+class TestFewerThan15Siblings(unittest.TestCase):
+    # US15
+    families_dict = { 
+        "family1": {
+            "Children": ["I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10", "I11", "I12", "I13", "I14", "I15", "I16", "I17"], 
+            "Married": "NA"
+        },
+        "family2": {
+            "Children": ["I1", "I2", "I3"], 
+            "Married": "NA"
+        }
+    }
+    # famiies[fid] = {"Children": [], "Married": "NA", "Divorced": "NA",
+    #                                  "Husband ID": "NA", "Wife ID": "NA", "Wife Name": "NA", "Husband Name": "NA"}
+    
+    def test_fewer_than_15(self):
+        """Returns true if the amount of children in a family is less than 15"""
+        self.assertEqual(userStories.fewer_than_15_siblings(TestFewerThan15Siblings.families_dict, "family2"), True)
+
+    def test_more_than_15(self):
+        """Returns false if the amount of children in a family is more than 15"""
+        self.assertEqual(userStories.fewer_than_15_siblings(TestFewerThan15Siblings.families_dict, "family1"), False)
+
+"""
+****************************************************************
+User Story 17: No marriages to descendants
+Author: Joshua Hector
+"""
+
+class TestNoMarriageDescendants(unittest.TestCase):
+    # US17
+    
+    families_dict = { 
+        "family1": {
+            "Children": ["I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10", "I11", "I12", "I13", "I14", "I15", "I16", "I17"], 
+            "Married": "NA",
+            "Wife ID": "I20",
+            "Husband ID": "I6"
+        },
+    }
+    
+    families_dict_true = { 
+        "family1": {
+            "Children": ["I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10", "I11", "I12", "I13", "I14", "I15", "I16", "I17"], 
+            "Married": "NA",
+            "Wife ID": "I20",
+            "Husband ID": "I21"
+        },
+    }
+    
+    def test_no_marriage_descendants(self):
+        """Returns true if there are no families that have no marriage to descendants"""
+        self.assertEqual(userStories
+                    .no_marriage_to_descendants(TestNoMarriageDescendants.families_dict_true), True)
+
+    def test_marriage_descendants(self):
+        """Returns false if there are families that have a marriage to descendants"""
+        self.assertEqual(userStories
+                    .no_marriage_to_descendants(TestNoMarriageDescendants.families_dict), False)
 
 """
 ****************************************************************
