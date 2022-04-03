@@ -367,3 +367,29 @@ def uniqueIds(id_, dict):
         if id_ == key:
             return False
     return True
+
+
+"""
+****************************************************************
+User Story 18: Siblings should not marry
+Author: Eleni Rotsides
+"""
+
+
+def is_siblings_married(individuals_dict, families_dict):
+    """Checks every entry in families_dict and individuals_dict and ensures that
+    marriage is not between siblings. Raises ValueError if siblings are married and
+    returns False if all marriages are good."""
+
+    for index, family in families_dict.items():
+        if family["Children"] != []:
+            children = family["Children"]
+
+            for child in children:
+                individual = individuals_dict.get(child)
+
+                for ind, family in families_dict.items():
+                    if individual["Spouse"] == ("{'"+ind+"'}"):
+                        raise ValueError(
+                            "Error: FAMILY: US18: Siblings should not be married.")
+    return False
