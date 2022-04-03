@@ -38,10 +38,10 @@ months = {
 
 
 def compareDates(date1, date2):
-	#helper function to check if date 1 comes before date 2
-	#Dates provided must be in YYYY-MM-DD format
+    # helper function to check if date 1 comes before date 2
+    # Dates provided must be in YYYY-MM-DD format
 
-    #create tokens from date 1
+    # create tokens from date 1
     d1_tokens = date1.split("-")
 
     # Create tokens from date 2
@@ -58,7 +58,7 @@ def compareDates(date1, date2):
             if d1_tokens[2] <= d2_tokens[2]:
                 # Check days
                 return True
-    return False;
+    return False
 
 
 """
@@ -146,8 +146,10 @@ User Story 4: Marriage Before Divorce
 Author: Dave Taveras
 """
 
+
 def marriageBeforeDivorce(marriageDate, divorceDate):
-	return compareDates(marriageDate, divorceDate)
+    return compareDates(marriageDate, divorceDate)
+
 
 """
 ****************************************************************
@@ -269,32 +271,36 @@ def is_less_than_150(birth, current, death):
         return int(c_tokens[0]) < (150 + int(b_tokens[0]))
     else:
         return "Not enough information supplied"
-    
+
+
 """
 ****************************************************************
 User Story 15: Fewer than 15 siblings
 Author: Joshua Hector
 """
 
+
 def fewer_than_15_siblings(families_dict, family_id):
     """Returns true if the amount of siblings in a family is less than 15."""
     # family_list = []
     family = families_dict.get(family_id)
-    
+
     # for fam in family["Children"]:
     #     if len(fam) >= 15:
     #         family_list.append(fam)
-            
+
     if len(family["Children"]) > 15:
         return False
     else:
         return True
+
 
 """
 ****************************************************************
 User Story 17: No marriages to descendants
 Author: Joshua Hector
 """
+
 
 def no_marriage_to_descendants(families_dict):
     """Returns True if there are no parents that are married to their descendants."""
@@ -303,10 +309,10 @@ def no_marriage_to_descendants(families_dict):
     for fam, value in families_dict.items():
         if (families_dict[fam]["Wife ID"] in families_dict[fam]["Children"]) or (families_dict[fam]["Husband ID"] in families_dict[fam]["Children"]):
             wrong_parent_marry.append(fam)
-                
+
     if len(wrong_parent_marry) > 0:
         return False
-    else: 
+    else:
         return True
 
 
@@ -316,15 +322,42 @@ User Story 22: All ID's Are Unique
 Author: Dave Taveras
 """
 
-def uniqueIds(id_, dict):
-	"""
-		This function iterates a dictionary to ensure that the 
-		given id is not already present
 
-		returns true if id is not found
-		returns false if id is found
-	"""
-	for key in dict:
-		if id_ == key:
-			return False;
-	return True;
+def uniqueIds(id_, dict):
+    """
+            This function iterates a dictionary to ensure that the 
+            given id is not already present
+
+            returns true if id is not found
+            returns false if id is found
+    """
+    for key in dict:
+        if id_ == key:
+            return False
+    return True
+
+
+"""
+****************************************************************
+User Story 18: Siblings should not marry
+Author: Eleni Rotsides
+"""
+
+
+def is_siblings_married(individuals_dict, families_dict):
+    """Checks every entry in families_dict and individuals_dict and ensures that
+    marriage is not between siblings. Raises ValueError if siblings are married and
+    returns False if all marriages are good."""
+
+    for index, family in families_dict.items():
+        if family["Children"] != []:
+            children = family["Children"]
+
+            for child in children:
+                individual = individuals_dict.get(child)
+
+                for ind, family in families_dict.items():
+                    if individual["Spouse"] == ("{'"+ind+"'}"):
+                        raise ValueError(
+                            "Error: FAMILY: US18: Siblings should not be married.")
+    return False
