@@ -187,6 +187,14 @@ def eval():
     print("Families")
     print(tabulate(family_table, family_headers, tablefmt="pretty"))
 
+    # for ind, value in individuals.items():
+    #     print(ind, value)
+
+    # for ind, value in families.items():
+    #     print(ind, value)
+
+    print(individuals)
+
     file.close()
     return
 

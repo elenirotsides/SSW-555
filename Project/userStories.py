@@ -328,3 +328,21 @@ def uniqueIds(id_, dict):
 		if id_ == key:
 			return False;
 	return True;
+
+"""
+****************************************************************
+User Story 20: Aunts and Uncles
+Author: Julio Lora
+"""
+
+
+def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
+
+    husband_siblings = []
+    wife_siblings = []
+    
+    husband_parents = []
+    wife_parents = []
+
+    husband_family_id = individual_dict[husband_id]["Child"]
+    return True
