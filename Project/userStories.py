@@ -275,6 +275,38 @@ def is_less_than_150(birth, current, death):
 
 """
 ****************************************************************
+User Story 16: Male last names
+Author: Eleni Rotsides
+"""
+
+
+def male_same_last_name(individuals_dict, families_dict, familyID):
+    """All male members of a family should have the same last name"""
+
+    family = families_dict.get(familyID)
+    husband_last_name = ""
+
+    if family["Husband Name"] != "NA":
+        husband_last_name = family["Husband Name"].split()[1]
+
+        if family["Children"] != []:
+            children = family["Children"]
+
+            for child in children:
+                individual = individuals_dict.get(child)
+                child_last_name = individual["Name"].split()[1]
+
+                if individual["Gender"] == "M" and (child_last_name != husband_last_name):
+                    raise ValueError(
+                        "Error: FAMILY: US16: All male members of " + familyID + " do not have the same last name.")
+            return True
+    else:
+        raise ValueError(
+            "Error: FAMILY: US16: No husband in family " + familyID + ".")
+
+
+"""
+****************************************************************
 User Story 15: Fewer than 15 siblings
 Author: Joshua Hector
 """
