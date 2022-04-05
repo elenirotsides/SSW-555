@@ -335,16 +335,18 @@ User Story 20: Aunts and Uncles
 Author: Julio Lora
 """
 
-
 def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
+    """
+        This function checks to see if a married couple includes an aunt and nephew or uncle and niece
+
+        returns true if it does
+        returns false if not
+    """
 
     # Initialize husband_siblings and wife_siblings
     husband_siblings = []
     wife_siblings = []
-    
-    # Initialize husband_parents and wife_parents
-    husband_parents = []
-    wife_parents = []
+
 
     husband_family_id = individual_dict[husband_id]["Child"]            # Get the family that the husband is in
     husband_siblings.append(family_dict[husband_family_id]["Children"]) # Add to list of husband_siblings
@@ -354,4 +356,18 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
     wife_siblings.append(family_dict[wife_family_id]["Children"]) # Add to list of wife_siblings
     wife_siblings.remove(wife_id)                                 # Remove the wife from the list of her own siblings
 
-    return True
+    husband_father_id = family_dict[husband_family_id]["Husband ID"] # Get husbands father
+    husband_mother_id = family_dict[husband_family_id]["Wife ID"]    # Get husbands mother
+
+    wife_father_id = family_dict[husband_family_id]["Husband ID"]   # Get wifes father
+    wife_mother_id = family_dict[husband_family_id]["Wife ID"]      #Get wifes mother
+
+    # Check if the husband is the uncle of the wife
+    if (wife_father_id in husband_siblings) or (wife_mother_id in husband_siblings):
+        return True
+
+    #Checks if the wife is the aunt of the husband
+    if (husband_father_id in wife_siblings) or (husband_mother_id in wife_siblings):
+        return True
+
+    return False

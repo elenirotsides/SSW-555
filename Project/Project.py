@@ -13,6 +13,7 @@ please install with:
 import userStories
 from datetime import datetime
 from tabulate import tabulate
+import pprint
 
 individuals = {}
 families = {}
@@ -193,9 +194,13 @@ def eval():
     # for ind, value in families.items():
     #     print(ind, value)
 
-    print(individuals)
-    print("-------------------------------------")
-    print(families)
+
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(families)
+
+    # print(individuals)
+    # print("-------------------------------------")
+    # print(families)
 
     file.close()
     return
