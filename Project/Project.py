@@ -194,6 +194,8 @@ def eval():
     #     print(ind, value)
 
     print(individuals)
+    print("-------------------------------------")
+    print(families)
 
     file.close()
     return
