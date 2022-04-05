@@ -445,7 +445,7 @@ class TestNoMarriageDescendants(unittest.TestCase):
 
 """
 ****************************************************************
-User Story 18: Male last names
+User Story 18: Siblings should not marry
 Author: Eleni Rotsides
 """
 
