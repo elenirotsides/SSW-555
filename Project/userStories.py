@@ -376,15 +376,52 @@ def is_siblings_married(individuals_dict, families_dict):
 
 """
 ****************************************************************
+User Story 31: List living single
+Author: Eleni Rotsides
+"""
+
+
+def list_living_single(individuals_dict, families_dict):
+    """Returns a list of all living people over 30 who have never been married in a GEDCOM file"""
+
+    single_people = []  # will contain a list of individuals that have never been married
+    for i, person in individuals_dict.items():
+        # A flag that will will be used to mark a person as never having been married while also being above 30 years of age
+        person["Single"] = False
+
+        if person["Spouse"] == "NA" and person["Age"] > 30:
+            # check to see if they've been married before; if not, add to single_people list
+            for j, family in families_dict.items():
+                if family["Husband ID"] == i or family["Wife ID"] == i and (family["Married"] == "NA" and family["Divorced"] == "NA" and not person["Single"]):
+                    if family["Husband ID"] == "NA" or family["Wife ID"] == "NA":
+                        single_people.append(person)
+                        person["Single"] = True
+
+            # at this point, person isn't in families table, but spouse field is marked as NA, so they haven't been married, so add to list
+            # after checking that they haven't been flaged as single
+            if not person["Single"]:
+                single_people.append(person)
+                person["Single"] = True
+
+    listOfSingletons = ""
+    for person in single_people:
+        listOfSingletons += f'{person["Name"]} is over the age of 30 and has never been married.\n'
+
+    return listOfSingletons
+
+
+"""
+****************************************************************
 User Story 22: All ID's Are Unique
 Author: Dave Taveras
 """
+
 
 def uniqueIds(id_, ind_dict):
     """
     This function iterates a dictionary to ensure that the 
     given id is not already present
-            
+
     @returns true if unique / false if not
     """
     for key in ind_dict:
@@ -399,17 +436,18 @@ User Story 23: uniqueNameAndBirthday
 Author: Dave Taveras
 """
 
+
 def uniqueNameAndBirthday(name, bday, ind_dict):
     """
     This function iterates the dictionary to ensure that
     the name and birthday of the individual with the given id
     is unique.
-    
+
     @returns true if unique / false if not
 
     """
 
-    for key,value in ind_dict.items():
+    for key, value in ind_dict.items():
         if value["Name"] == name and value["Birthday"] == bday:
             return False
     return True
@@ -421,12 +459,13 @@ User Story 25: uniqueFirstNameInFamily
 Author: Dave Taveras
 """
 
+
 def uniqueFirstNameInFamily(id_, fid, ind_dict, fam_dict):
     """
     This function searches the individuals dictionary with the id's
     provided from the familiies dictionary to ensure that each first name
     and birthday is unique in that family.
-    
+
     @returns true if unique / false if not
 
     """
@@ -438,6 +477,3 @@ def uniqueFirstNameInFamily(id_, fid, ind_dict, fam_dict):
         if name == ind_dict[child]["Name"].split()[0] and bday == ind_dict[child]["Birthday"]:
             return False
     return True
-
-
-
