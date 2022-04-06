@@ -350,27 +350,6 @@ def no_marriage_to_descendants(families_dict):
 
 """
 ****************************************************************
-User Story 22: All ID's Are Unique
-Author: Dave Taveras
-"""
-
-
-def uniqueIds(id_, dict):
-    """
-            This function iterates a dictionary to ensure that the 
-            given id is not already present
-
-            returns true if id is not found
-            returns false if id is found
-    """
-    for key in dict:
-        if id_ == key:
-            return False
-    return True
-
-
-"""
-****************************************************************
 User Story 18: Siblings should not marry
 Author: Eleni Rotsides
 """
@@ -429,3 +408,72 @@ def list_living_single(individuals_dict, families_dict):
         listOfSingletons += f'{person["Name"]} is over the age of 30 and has never been married.\n'
 
     return listOfSingletons
+
+
+"""
+****************************************************************
+User Story 22: All ID's Are Unique
+Author: Dave Taveras
+"""
+
+
+def uniqueIds(id_, ind_dict):
+    """
+    This function iterates a dictionary to ensure that the 
+    given id is not already present
+
+    @returns true if unique / false if not
+    """
+    for key in ind_dict:
+        if id_ == key:
+            return False
+    return True
+
+
+"""
+****************************************************************
+User Story 23: uniqueNameAndBirthday
+Author: Dave Taveras
+"""
+
+
+def uniqueNameAndBirthday(name, bday, ind_dict):
+    """
+    This function iterates the dictionary to ensure that
+    the name and birthday of the individual with the given id
+    is unique.
+
+    @returns true if unique / false if not
+
+    """
+
+    for key, value in ind_dict.items():
+        if value["Name"] == name and value["Birthday"] == bday:
+            return False
+    return True
+
+
+"""
+****************************************************************
+User Story 25: uniqueFirstNameInFamily
+Author: Dave Taveras
+"""
+
+
+def uniqueFirstNameInFamily(id_, fid, ind_dict, fam_dict):
+    """
+    This function searches the individuals dictionary with the id's
+    provided from the familiies dictionary to ensure that each first name
+    and birthday is unique in that family.
+
+    @returns true if unique / false if not
+
+    """
+
+    name = ind_dict[id_]["Name"].split()[0]
+    bday = ind_dict[id_]["Birthday"]
+
+    for child in fam_dict[fid]["Children"]:
+        if name == ind_dict[child]["Name"].split()[0] and bday == ind_dict[child]["Birthday"]:
+            return False
+    return True
