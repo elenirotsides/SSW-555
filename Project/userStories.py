@@ -393,3 +393,39 @@ def is_siblings_married(individuals_dict, families_dict):
                         raise ValueError(
                             "Error: FAMILY: US18: Siblings should not be married.")
     return False
+
+
+"""
+****************************************************************
+User Story 31: List living single
+Author: Eleni Rotsides
+"""
+
+
+def list_living_single(individuals_dict, families_dict):
+    """Returns a list of all living people over 30 who have never been married in a GEDCOM file"""
+
+    single_people = []  # will contain a list of individuals that have never been married
+    for i, person in individuals_dict.items():
+        # A flag that will will be used to mark a person as never having been married while also being above 30 years of age
+        person["Single"] = False
+
+        if person["Spouse"] == "NA" and person["Age"] > 30:
+            # check to see if they've been married before; if not, add to single_people list
+            for j, family in families_dict.items():
+                if family["Husband ID"] == i or family["Wife ID"] == i and (family["Married"] == "NA" and family["Divorced"] == "NA" and not person["Single"]):
+                    if family["Husband ID"] == "NA" or family["Wife ID"] == "NA":
+                        single_people.append(person)
+                        person["Single"] = True
+
+            # at this point, person isn't in families table, but spouse field is marked as NA, so they haven't been married, so add to list
+            # after checking that they haven't been flaged as single
+            if not person["Single"]:
+                single_people.append(person)
+                person["Single"] = True
+
+    listOfSingletons = ""
+    for person in single_people:
+        listOfSingletons += f'{person["Name"]} is over the age of 30 and has never been married.\n'
+
+    return listOfSingletons
