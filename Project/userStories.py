@@ -361,9 +361,13 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
         returns false if not
     """
 
-    # Initialize husband_siblings and wife_siblings
+    # Initialize various variables
     husband_siblings = []
     wife_siblings = []
+    husband_father_id = ""
+    husband_mother_id = ""
+    wife_father_id = ""
+    wife_mother_id = ""  
 
     husband_family_id = individual_dict[husband_id]["Child"]            # Get the family that the husband is in
 
@@ -371,6 +375,8 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
         for person in family_dict[husband_family_id]["Children"]:
             husband_siblings.append(person)                         # Add to list of husband_siblings
         husband_siblings.remove(husband_id)                         # Remove the husband from the list of his own siblings
+        husband_father_id = family_dict[husband_family_id]["Husband ID"] # Get husbands father
+        husband_mother_id = family_dict[husband_family_id]["Wife ID"]    # Get husbands mother
 
     wife_family_id = individual_dict[wife_id]["Child"]            # Get the family that the wife is in
 
@@ -378,12 +384,8 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
         for person in family_dict[wife_family_id]["Children"]:
             wife_siblings.append(person)                                # Add to list of wife_siblings
         wife_siblings.remove(wife_id)                                 # Remove the wife from the list of her own siblings
-
-    husband_father_id = family_dict[husband_family_id]["Husband ID"] # Get husbands father
-    husband_mother_id = family_dict[husband_family_id]["Wife ID"]    # Get husbands mother
-
-    wife_father_id = family_dict[husband_family_id]["Husband ID"]   # Get wifes father
-    wife_mother_id = family_dict[husband_family_id]["Wife ID"]      #Get wifes mother
+        wife_father_id = family_dict[wife_family_id]["Husband ID"]   # Get wifes father
+        wife_mother_id = family_dict[wife_family_id]["Wife ID"]      #Get wifes mother
 
     # Check if the husband is the uncle of the wife
     if (wife_father_id in husband_siblings) or (wife_mother_id in husband_siblings):

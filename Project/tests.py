@@ -653,6 +653,10 @@ class test_aunts_and_uncles(unittest.TestCase):
         """Returns False if the marriage does not include an aunt or uncle with their niece or nephew"""
         self.assertEqual(userStories.aunts_and_uncles("I1", "I2", families_dict, individuals_dict), False)
 
+    def test_bad_marriage(self):
+        """Returns True if the marriage does include an aunt or uncle with their niece or nephew"""
+        self.assertEqual(userStories.aunts_and_uncles("I3", "I7", families_dict, individuals_dict), True)
+
 
 if __name__ == '__main__':
     unittest.main()
