@@ -13,6 +13,7 @@ please install with:
 import userStories
 from datetime import datetime
 from tabulate import tabulate
+import pprint
 
 individuals = {}
 families = {}
@@ -153,12 +154,10 @@ def eval():
             individuals[id_]["Gender"] = args[0]
 
         if tag == "FAMC":
-            individuals[id_]["Child"] = "{" + args[0] + "}"
-            
+            individuals[id_]["Child"] = args[0]
 
         if tag == "FAMS":
             individuals[id_]["Spouse"] = "{'" + args[0] + "'}"
-            
 
         if tag == "HUSB":
             families[fid]["Husband ID"] = args[0]
