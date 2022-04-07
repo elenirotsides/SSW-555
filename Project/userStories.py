@@ -559,3 +559,31 @@ def list_multiple_births(individuals_dict):
         for person in people:
             listOfMultipleBirths += f'{person["Name"]} '
     return listOfMultipleBirths
+
+# """
+# ****************************************************************
+# User Story 21: Correct Gender Roles
+# Author: Julio Lora
+# """
+
+
+def correct_gender_roles(fam_dict, ind_dict):
+    """
+    This function searches the families dictionary to ensure that each husband is male and each wife is female
+
+    @returns true if the husbands are male and the wifes are female / false if not
+
+    """
+
+    husband_ID = ""
+    wife_ID = ""
+
+    for family in fam_dict:
+        husband_ID = fam_dict[family]["Husband ID"]
+        wife_ID = fam_dict[family]["Wife ID"]
+        if (husband_ID != 'NA' and wife_ID != 'NA'):
+            if (ind_dict[husband_ID]["Gender"] != 'M'):
+                return False
+            if (ind_dict[wife_ID]["Gender"] != 'F'):
+                return False
+    return True
