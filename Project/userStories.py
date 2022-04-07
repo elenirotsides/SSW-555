@@ -69,7 +69,7 @@ Author: Dave Taveras
 
 
 def dateBeforeCurrent(date):
-    """ 
+    """
             this boolean function is to be called to validate a date.
             this only ensures a date does not come from the future.
             returns true if date comes from past or current date
@@ -164,7 +164,7 @@ def marriageBeforeDeath(m_date, d_date):
     date of death. Both dates are in the format:
     "YYYY-MM-DD"
 
-    note: m_date should not be "NA" since function should 
+    note: m_date should not be "NA" since function should
     be called if a marriage date is provided
     """
     if(m_date == "NA"):
@@ -250,7 +250,7 @@ Author: Eleni Rotsides
 
 
 def is_less_than_150(birth, current, death):
-    """Death should be less than 150 years after birth for dead people, and 
+    """Death should be less than 150 years after birth for dead people, and
     current date should be less than 150 years after birth for all living people
     returns boolean"""
 
@@ -419,7 +419,7 @@ Author: Dave Taveras
 
 def uniqueIds(id_, ind_dict):
     """
-    This function iterates a dictionary to ensure that the 
+    This function iterates a dictionary to ensure that the
     given id is not already present
 
     @returns true if unique / false if not
@@ -477,3 +477,36 @@ def uniqueFirstNameInFamily(id_, fid, ind_dict, fam_dict):
         if name == ind_dict[child]["Name"].split()[0] and bday == ind_dict[child]["Birthday"]:
             return False
     return True
+
+
+"""
+****************************************************************
+User Story 32: List multiple births
+Author: Eleni Rotsides
+"""
+
+
+def list_multiple_births(individuals_dict):
+    """Returns a list containing all people that share a birthday"""
+    multiples = {}
+
+    # Creates a dictionary with birthdates as keys and people sharing the birthdays as values
+    for i, person in individuals_dict.items():
+        if person["Birthday"] in multiples:
+            multiples[person["Birthday"]] += [person]
+        else:
+            multiples[person["Birthday"]] = [person]
+
+    multiples_final = {}
+
+    # adds entries of multiples to multiples_final only if there is more than 1 person born that day
+    for i, people in multiples.items():
+        if len(people) > 1:
+            multiples_final[i] = people
+
+    listOfMultipleBirths = ""
+    for i, people in multiples_final.items():
+        listOfMultipleBirths += f'On {person["Birthday"]}, the following people share a birthday: '
+        for person in people:
+            listOfMultipleBirths += f'{person["Name"]} '
+    return listOfMultipleBirths
