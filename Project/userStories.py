@@ -393,3 +393,100 @@ def is_siblings_married(individuals_dict, families_dict):
                         raise ValueError(
                             "Error: FAMILY: US18: Siblings should not be married.")
     return False
+
+"""
+****************************************************************
+User Story 33: Orphaned Children
+Author: Joshua Hector
+"""
+
+def orphaned_children(individuals_dict, families_dict):
+    """List all orphaned children (both parents dead and child < 18 years old) 
+    in a GEDCOM file."""
+
+    orphan_list = []
+    
+    for family in families_dict.values():
+        if family["Husband_ID"] != "NA" and family["Wife_ID"] != "NA":
+            for individual in individuals_dict.values():
+                if family["Husband_ID"] == individual["ID"]:
+                    husband = individual
+
+                if family["Wife_ID"] == individual["ID"]:
+                    wife = individual
+
+            if husband["Death"] != "NA" and wife["Death"] != "NA" and len(family["Children"]) != 0:
+                for child in family["Children"]:
+                    for individual in individuals_dict.values():
+                        if child == individual["ID"]:
+                            child_indi = individual
+
+                    if child_indi["Age"] < 18:
+                        orphan_list.append(child_indi)
+                        
+    if len(orphan_list) > 0:
+        return False
+    else:
+        return orphan_list
+
+
+"""
+****************************************************************
+User Story 34: Large Age Differences
+Author: Joshua Hector
+"""
+
+def large_age_diff(families_dict, individuals_dict):
+    """List all couples who were married when the older 
+    spouse was more than twice as old as the younger spouse. """
+    
+    couples = []
+    
+    for family in families_dict:
+        if family["Husband_ID"] != "NA" and family["Wife_ID"] != "NA":
+            married_date = family["Marriage"].split("-")
+            for individual in individuals_dict.values():
+                if family["Husband_ID"] == individual["ID"]:
+                    husband = individual
+                    husband_birth_date = husband["Birthday"].split("-")
+                if family["Wife_ID"] == individual["ID"]:
+                    wife = individual
+                    wife_birth_date = wife["Birthday"].split("-")
+            
+            husband_age_when_married = married_date[0] - husband_birth_date[0]
+            wife_age_when_married = married_date[0] - wife_birth_date[0]
+            
+            if (husband_age_when_married / wife_age_when_married) > 2 or (wife_age_when_married / husband_age_when_married) > 2:
+                couples.append(husband["Name"], wife["Name"])   
+                
+    if len(couples) == 0:
+        return False
+    else:
+        return couples   
+            
+                    
+            
+                    
+                
+            
+                    
+    """
+    # create tokens from date 1
+    d1_tokens = date1.split("-")
+
+    # Create tokens from date 2
+    d2_tokens = date2.split("-")
+
+    if d1_tokens[0] < d2_tokens[0]:
+        return True
+    if d1_tokens[0] == d2_tokens[0]:
+        # If years are equal check months
+        if d1_tokens[1] < d2_tokens[1]:
+            return True
+        if d1_tokens[1] == d2_tokens[1]:
+            # If months are equal check days
+            if d1_tokens[2] <= d2_tokens[2]:
+                # Check days
+                return True
+    return False
+    """
