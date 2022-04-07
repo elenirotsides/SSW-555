@@ -53,6 +53,9 @@ def eval():
     for line in lines:
         # store the level, tag, and arg
         tokens = line.split()
+        #make sure any blank lines are ignored just incase
+        if len(tokens) == 0:
+            continue
         level = tokens[0]
         tag = tokens[1]
         args = tokens[2:]
@@ -109,6 +112,8 @@ def eval():
                 individuals[id_]["Death"] = date
                 flag = ""
             if flag == "BIRT":
+                if userStories.uniqueNameAndBirthday(individuals[id_]["Name"], date, individuals) == False:
+                    print("Error: Individual:", id_+":", "US23:", "Name", individuals[id_]["Name"], "and Birthday", date, "are not unique.")
                 age = year - int(args[2])
                 individuals[id_]["Age"] = age
                 individuals[id_]["Birthday"] = date
@@ -163,7 +168,13 @@ def eval():
             families[fid]["Wife Name"] = individuals[args[0]]["Name"]
 
         if tag == "CHIL":
+            if userStories.uniqueFirstNameInFamily(args[0], fid, individuals, families) == False:
+                print("Error: Family:", args[0]+":", "US25:", "First Name", 
+                    individuals[id_]["Name"].split()[0], "and Birthday", 
+                    individuals[id_]["Birthday"], "are not unique in family.")
             families[fid]["Children"] += args
+
+
 
     # Print table of individuals and Families
     individuals_table = []
