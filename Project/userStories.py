@@ -388,6 +388,9 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
 
 
     husband_family_id = individual_dict[husband_id]["Child"]            # Get the family that the husband is in
+    # print(husband_family_id)
+    # print(family_dict["F2"])
+    # print("---------------------------------------------")
     husband_siblings.append(family_dict[husband_family_id]["Children"]) # Add to list of husband_siblings
     husband_siblings.remove(husband_id)                                 # Remove the husband from the list of his own siblings
 

@@ -149,12 +149,10 @@ def eval():
             individuals[id_]["Gender"] = args[0]
 
         if tag == "FAMC":
-            individuals[id_]["Child"] = "{" + args[0] + "}"
-            individuals[id_]["Spouse"] = "NA"
+            individuals[id_]["Child"] = args[0]
 
         if tag == "FAMS":
             individuals[id_]["Spouse"] = "{'" + args[0] + "'}"
-            individuals[id_]["Child"] = "NA"
 
         if tag == "HUSB":
             families[fid]["Husband ID"] = args[0]
@@ -195,8 +193,8 @@ def eval():
     #     print(ind, value)
 
 
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(families)
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(families)
 
     # print(individuals)
     # print("-------------------------------------")
