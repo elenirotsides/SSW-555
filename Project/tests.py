@@ -57,8 +57,6 @@ individuals_dict = {'I1': {'ID': 'NA', 'Name': 'William /Afton/', 'Gender': 'M',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I6': {'ID': 'NA', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 'I7': {'ID': 'NA', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': 'F3', 'Spouse': 'NA'}, 'I8': {'ID': 'NA', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F3'}"}, 'I9': {'ID': 'NA', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': 'F4', 'Spouse': 'NA'}}
 families_dict = {'F1': {'Children': ['I3', 'I4', 'I5'], 'Married': 'NA', 'Divorced': 'NA', 'Husband ID': 'I1', 'Wife ID': 'I2', 'Wife Name': 'Sabrina /Simmons/', 'Husband Name': 'William /Afton/'}, 'F2': {'Children': ['I1'], 'Married': 'NA', 'Divorced': 'NA', 'Husband ID': 'NA', 'Wife ID': 'NA', 'Wife Name': 'NA', 'Husband Name': 'NA'}, 'F3': {
             'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}, 'F4': {'Children': ['I9'], 'Married': '1996-10-6', 'Divorced': 'NA', 'Husband ID': 'I6', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Robert /Fox/'}}
-
-
 """
 ****************************************************************
 User Story 01: datesBeforeCurrent
@@ -692,6 +690,26 @@ class test_list_living_married(unittest.TestCase):
         """Returns a list of the names of those who are deceased"""
         self.assertEqual(userStories.list_living_married(individuals_dict_living_married), ["William /Afton/", "Sabrina /Simmons/", "Elizabeth /Afton/", "Freddy /Fazbear/"])
 
+
+# This is to be used for the test case for US21
+individuals_dict_fake_gender_roles = {'I1': {'ID': 'NA', 'Name': 'William /Afton/', 'Gender': 'F', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': 'F2', 'Spouse': 'NA'}, 'I2': {'ID': 'NA', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 'I3': {'ID': 'NA', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I4': {'ID': 'NA', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I5': {'ID': 'NA', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I6': {'ID': 'NA', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 'I7': {'ID': 'NA', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': 'F3', 'Spouse': 'NA'}, 'I8': {'ID': 'NA', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F3'}"}, 'I9': {'ID': 'NA', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': 'F4', 'Spouse': 'NA'}}
+
+"""
+****************************************************************
+User Story 21: Correct Gender Roles
+Author: Julio Lora
+"""
+
+
+class test_correct_gender_roles(unittest.TestCase):
+    def test_good_gender_roles(self):
+        """Returns True if the families follow correct gender roles"""
+        self.assertEqual(userStories.correct_gender_roles(families_dict, individuals_dict), True)
+
+    def test_bad_gender_roles(self):
+        """Returns False if the families don't follow correct gender roles"""
+        self.assertEqual(userStories.correct_gender_roles(families_dict, individuals_dict_fake_gender_roles), False)
 
 if __name__ == '__main__':
     unittest.main()
