@@ -441,28 +441,22 @@ def large_age_diff(families_dict, individuals_dict):
     
     couples = []
     
-    for family in families_dict:
-        print(family)
-        married_date = family["Marriage"].split()[0]
+    for family in families_dict.values():
+        married_date = family['Married'].split("-")[0]
         for individual in individuals_dict.values():
             if family["Husband ID"] == individual["ID"]:
                 husband = individual
-                husband_birth_date = husband["Birthday"].split()[0]
+                husband_birth_date = husband["Birthday"].split("-")[0]
             if family["Wife ID"] == individual["ID"]:
                 wife = individual
-                wife_birth_date = wife["Birthday"].split()[0]
-        
-        print(married_date)
-        print(husband_birth_date)
-        print(wife_birth_date)
+                wife_birth_date = wife["Birthday"].split("-")[0]
+                
         husband_age_when_married = int(married_date) - int(husband_birth_date)
         wife_age_when_married = int(married_date) - int(wife_birth_date)
         
-        print(husband_age_when_married)
-        print(wife_age_when_married)
-        
         if (husband_age_when_married / wife_age_when_married) > 2 or (wife_age_when_married / husband_age_when_married) > 2:
-            couples.append(husband["Name"], wife["Name"])   
+            couples.append(husband["Name"])
+            couples.append(wife["Name"])
                 
     if len(couples) == 0:
         return False
