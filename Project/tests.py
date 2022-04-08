@@ -429,13 +429,11 @@ class TestMaleLastNames(unittest.TestCase):
         self.assertEqual(userStories.male_same_last_name(
             individuals, families, "F1"), True)
 
-
 """
 ****************************************************************
 User Story 17: No marriages to descendants
 Author: Joshua Hector
 """
-
 
 class TestNoMarriageDescendants(unittest.TestCase):
     # US17
@@ -640,6 +638,8 @@ class TestMultipleBirths(unittest.TestCase):
             'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}, 'F4': {'Children': ['I9'], 'Married': '1996-10-6', 'Divorced': 'NA', 'Husband ID': 'I6', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Robert /Fox/'}}
         self.assertEqual(userStories.male_same_last_name(
             individuals, families, "F1"), True)
+        self.assertEqual(userStories.list_multiple_births(
+            individuals), "")
         
 """
 ****************************************************************
@@ -730,15 +730,11 @@ class TestLargeAgeDifferences(unittest.TestCase):
         self.assertEqual(userStories
                          .large_age_diff(TestLargeAgeDifferences.families_dict2, TestLargeAgeDifferences.individuals_dict2), ['William /Afton/', 'Sabrina /Simmons/'])
 
-        self.assertEqual(userStories.list_multiple_births(
-            individuals), "")
-
 """
 ****************************************************************
 User Story 20: Aunts and Uncles
 Author: Julio Lora
 """
-
 
 class test_aunts_and_uncles(unittest.TestCase):
     def test_good_marriage(self):
