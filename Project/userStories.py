@@ -559,3 +559,22 @@ def list_multiple_births(individuals_dict):
         for person in people:
             listOfMultipleBirths += f'{person["Name"]} '
     return listOfMultipleBirths
+
+"""
+****************************************************************
+User Story 29: List Deceased
+Author: Julio Lora
+"""
+
+def list_deceased(ind_dict):
+    """
+    This function iterates the dictionary and returns a list of all deceased people
+
+    @returns list of deceased people
+
+    """
+    deceased_list = []
+    for person in ind_dict:
+        if (ind_dict[person]["Death"] != 'NA'):
+            deceased_list.append(ind_dict[person]["Name"])
+    return deceased_list
