@@ -560,11 +560,11 @@ def list_multiple_births(individuals_dict):
             listOfMultipleBirths += f'{person["Name"]} '
     return listOfMultipleBirths
 
-# """
-# ****************************************************************
-# User Story 21: Correct Gender Roles
-# Author: Julio Lora
-# """
+"""
+****************************************************************
+User Story 21: Correct Gender Roles
+Author: Julio Lora
+"""
 
 
 def correct_gender_roles(fam_dict, ind_dict):
@@ -587,3 +587,42 @@ def correct_gender_roles(fam_dict, ind_dict):
             if (ind_dict[wife_ID]["Gender"] != 'F'):
                 return False
     return True
+"""
+****************************************************************
+User Story 29: List Deceased
+Author: Julio Lora
+"""
+
+def list_deceased(ind_dict):
+    """
+    This function iterates the dictionary and returns a list of all deceased people
+
+    @returns list of deceased people
+
+    """
+    deceased_list = []
+    for person in ind_dict:
+        if (ind_dict[person]["Death"] != 'NA'):
+            deceased_list.append(ind_dict[person]["Name"])
+    return deceased_list
+
+"""
+****************************************************************
+User Story 30: List Living Married
+Author: Julio Lora
+"""
+
+def list_living_married(ind_dict):
+    """
+    This function iterates the dictionary and returns a list of all people who are living and married
+
+    @returns list of people who are living and married
+
+    """
+    living_married_list = []
+    for person in ind_dict:
+        if (ind_dict[person]["Spouse"] != 'NA'):
+            if (ind_dict[person]["Death"] == 'NA'):
+                living_married_list.append(ind_dict[person]["Name"])
+    
+    return living_married_list
