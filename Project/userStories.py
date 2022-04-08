@@ -333,7 +333,6 @@ User Story 17: No marriages to descendants
 Author: Joshua Hector
 """
 
-
 def no_marriage_to_descendants(families_dict):
     """Returns True if there are no parents that are married to their descendants."""
     wrong_parent_marry = []
@@ -422,7 +421,6 @@ def is_siblings_married(individuals_dict, families_dict):
                             "Error: FAMILY: US18: Siblings should not be married.")
     return False
 
-
 """
 ****************************************************************
 User Story 31: List living single
@@ -457,14 +455,12 @@ def list_living_single(individuals_dict, families_dict):
         listOfSingletons += f'{person["Name"]} is over the age of 30 and has never been married.\n'
 
     return listOfSingletons
-
-
+      
 """
 ****************************************************************
 User Story 22: All ID's Are Unique
 Author: Dave Taveras
 """
-
 
 def uniqueIds(id_, ind_dict):
     """
@@ -559,6 +555,74 @@ def list_multiple_births(individuals_dict):
         for person in people:
             listOfMultipleBirths += f'{person["Name"]} '
     return listOfMultipleBirths
+  
+"""
+****************************************************************
+User Story 33: Orphaned Children
+Author: Joshua Hector
+"""
+
+def orphaned_children(families_dict, individuals_dict):
+    """List all orphaned children (both parents dead and child < 18 years old) 
+    in a GEDCOM file."""
+
+    orphan_list = []
+    
+    for family in families_dict.values():
+        if len(family["Children"]) != 0:
+            for individual in individuals_dict.values():
+                if family["Husband Name"] == individual["Name"]:
+                    husband = individual
+
+                if family["Wife Name"] == individual["Name"]:
+                    wife = individual
+
+            if husband["Death"] != "NA" and wife["Death"] != "NA":
+                for child in family["Children"]:
+                    for individual in individuals_dict.values():
+                        if child == individual["ID"]:
+                            child_indi = individual
+                            if int(child_indi["Age"]) < 18:
+                                orphan_list.append(child_indi['Name'])
+                        
+    if len(orphan_list) == 0:
+        return False
+    else:
+        return orphan_list
+
+"""
+****************************************************************
+User Story 34: Large Age Differences
+Author: Joshua Hector
+"""
+
+def large_age_diff(families_dict, individuals_dict):
+    """List all couples who were married when the older 
+    spouse was more than twice as old as the younger spouse. """
+    
+    couples = []
+    
+    for family in families_dict.values():
+        married_date = family['Married'].split("-")[0]
+        for individual in individuals_dict.values():
+            if family["Husband ID"] == individual["ID"]:
+                husband = individual
+                husband_birth_date = husband["Birthday"].split("-")[0]
+            if family["Wife ID"] == individual["ID"]:
+                wife = individual
+                wife_birth_date = wife["Birthday"].split("-")[0]
+                
+        husband_age_when_married = int(married_date) - int(husband_birth_date)
+        wife_age_when_married = int(married_date) - int(wife_birth_date)
+        
+        if (husband_age_when_married / wife_age_when_married) > 2 or (wife_age_when_married / husband_age_when_married) > 2:
+            couples.append(husband["Name"])
+            couples.append(wife["Name"])
+                
+    if len(couples) == 0:
+        return False
+    else:
+        return couples 
 
 """
 ****************************************************************

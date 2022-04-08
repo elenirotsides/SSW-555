@@ -429,13 +429,11 @@ class TestMaleLastNames(unittest.TestCase):
         self.assertEqual(userStories.male_same_last_name(
             individuals, families, "F1"), True)
 
-
 """
 ****************************************************************
 User Story 17: No marriages to descendants
 Author: Joshua Hector
 """
-
 
 class TestNoMarriageDescendants(unittest.TestCase):
     # US17
@@ -636,15 +634,107 @@ class TestMultipleBirths(unittest.TestCase):
         """Tests that the function returns an empty string if there are no multiple births"""
         individuals = {'I1': {'ID': 'NA', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 'I2': {'ID': 'NA', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 'I3': {'ID': 'NA', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 'I4': {'ID': 'NA', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 'I5': {'ID': 'NA', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 'I6': {'ID': 'NA', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 'I7': {'ID': 'NA', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': '{F3}', 'Spouse': 'NA'}, 'I8': {'ID': 'NA', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F3'}"}, 'I9': {'ID': 'NA', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': '{F4}', 'Spouse': 'NA'}}
+        families = {'F1': {'Children': ['I3', 'I4', 'I5'], 'Married': 'NA', 'Divorced': 'NA', 'Husband ID': 'I1', 'Wife ID': 'I2', 'Wife Name': 'Sabrina /Simmons/', 'Husband Name': 'William /Afton/'}, 'F2': {'Children': ['I1'], 'Married': 'NA', 'Divorced': 'NA', 'Husband ID': 'NA', 'Wife ID': 'NA', 'Wife Name': 'NA', 'Husband Name': 'NA'}, 'F3': {
+            'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}, 'F4': {'Children': ['I9'], 'Married': '1996-10-6', 'Divorced': 'NA', 'Husband ID': 'I6', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Robert /Fox/'}}
+        self.assertEqual(userStories.male_same_last_name(
+            individuals, families, "F1"), True)
         self.assertEqual(userStories.list_multiple_births(
             individuals), "")
+        
+"""
+****************************************************************
+User Story 33: List Orphaned Children
+Author: Joshua Hector
+"""
+
+
+class TestOrphanedChildren(unittest.TestCase):
+    # US33
+
+    families_dict = {'F1': {'Children': ['I3', 'I4', 'I5'], 'Married': 'NA', 'Divorced': 'NA', 'Husband ID': 'I1', 'Wife ID': 'I2', 'Wife Name': 'Sabrina /Simmons/', 'Husband Name': 'William /Afton/'}, 
+                     'F3': {'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}, 
+                     'F4': {'Children': ['I9'], 'Married': '1996-10-6', 'Divorced': 'NA', 'Husband ID': 'I6', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Robert /Fox/'}}
+
+
+    individuals_dict = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 
+                       'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 
+                       'I3': {'ID': 'I3', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I5': {'ID': 'I5', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19', 'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I6': {'ID': 'I6', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 
+                       'I7': {'ID': 'I7', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': '{F3}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                       'I9': {'ID': 'I9', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': '{F4}', 'Spouse': 'NA'}
+                    }
+    
+    families_dict2 = {'F1': {'Children': ['I3', 'I4', 'I5'], 'Married': 'NA', 'Divorced': 'NA', 'Husband ID': 'I1', 'Wife ID': 'I2', 'Wife Name': 'Sabrina /Simmons/', 'Husband Name': 'William /Afton/'}} 
+    
+    individuals_dict2 = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 
+                       'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 
+                       'I3': {'ID': 'I3', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I5': {'ID': 'I5', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19', 'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I6': {'ID': 'I6', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 
+                       'I7': {'ID': 'I7', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': '{F3}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                       'I9': {'ID': 'I9', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': '{F4}', 'Spouse': 'NA'}
+                    }
+
+    def test_orphaned_children(self):
+        """Returns list of children if they are an orphan"""
+        self.assertEqual(userStories
+                         .orphaned_children(TestOrphanedChildren.families_dict, TestOrphanedChildren.individuals_dict), ["Montgomery /Fazbear/"])
+
+    def test_no_orphaned_children(self):
+        """Returns false if there are no children that are orphaned"""
+        self.assertEqual(userStories
+                         .orphaned_children(TestOrphanedChildren.families_dict2, TestOrphanedChildren.individuals_dict2), False)
+
+"""
+****************************************************************
+User Story 34: List Large Age Differences
+Author: Joshua Hector
+"""
+        
+class TestLargeAgeDifferences(unittest.TestCase):
+    # US33
+
+    families_dict = {'F1': {'Children': ['I3', 'I4', 'I5'], 'Married': '2002-01-05', 'Divorced': 'NA', 'Husband ID': 'I1', 'Wife ID': 'I2', 'Wife Name': 'Sabrina /Simmons/', 'Husband Name': 'William /Afton/'}, 
+                     'F3': {'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}
+    }
+
+
+    individuals_dict = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 
+                       'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 
+                       'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                    }
+    
+    families_dict2 = {'F1': {'Children': ['I3', 'I4', 'I5'], 'Married': '2002-01-05', 'Divorced': 'NA', 'Husband ID': 'I1', 'Wife ID': 'I2', 'Wife Name': 'Sabrina /Simmons/', 'Husband Name': 'William /Afton/'}, 
+                     'F3': {'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}
+    }
+    
+    individuals_dict2 = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 
+                       'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1980-03-4', 'Age': 42, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 
+                       'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                    }
+
+    def test_no_large_age_diff(self):
+        """Returns list of couples name if they had a large age difference when they were married"""
+        self.assertEqual(userStories
+                         .large_age_diff(TestLargeAgeDifferences.families_dict, TestLargeAgeDifferences.individuals_dict), False)
+
+    def test_large_age_diff(self):
+        """Returns false if there were no marriage that had a large age difference"""
+        self.assertEqual(userStories
+                         .large_age_diff(TestLargeAgeDifferences.families_dict2, TestLargeAgeDifferences.individuals_dict2), ['William /Afton/', 'Sabrina /Simmons/'])
 
 """
 ****************************************************************
 User Story 20: Aunts and Uncles
 Author: Julio Lora
 """
-
 
 class test_aunts_and_uncles(unittest.TestCase):
     def test_good_marriage(self):
