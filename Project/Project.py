@@ -73,7 +73,7 @@ def eval():
                     individuals[id_] = {"ID": "NA", "Name": "NA", "Gender": "NA", "Birthday": "NA",
                                         "Age": "NA", "Alive": True, "Death": "NA", "Child": "NA", "Spouse": "NA"}
                 else:
-                    print("Error: Individual:" +id_+":", "US22:", "Duplicate ID was provided")
+                    print("Error: Individual: " +id_+":", "US22:", "Duplicate ID was provided")
 
             elif args[i] == "FAM":
                 fid = tag
@@ -86,7 +86,7 @@ def eval():
                     families[fid] = {"Children": [], "Married": "NA", "Divorced": "NA",
                                      "Husband ID": "NA", "Wife ID": "NA", "Wife Name": "NA", "Husband Name": "NA"}
                 else:
-                    print("Error: Family: US22:", fid, "Duplicate ID was provided")
+                    print("Error: Family: " + fid+":", "US22:", "Duplicate ID was provided")
 
         # check tags
         if tag == "DEAT":
@@ -135,10 +135,10 @@ def eval():
                 """
                 if individuals[families[fid]["Husband ID"]]["Alive"] == False:
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Husband ID"]]["Death"]) == False:
-                        print("Error: Family:", fid+":", "US05: Married", date, "After Husband (" + families[fid]["Husband ID"] +") Death", individuals[families[fid]["Husband ID"]]["Death"])
+                        print("Error: Family:", fid+":", "US05: Married", date, "After Husband " + families[fid]["Husband ID"] +"'s Death", individuals[families[fid]["Husband ID"]]["Death"])
 
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Wife ID"]]["Death"]) == False:
-                        print("Error: Family:", fid+":", "US05: Married", date, "After Wife (" + families[fid]["Wife ID"] +") Death", individuals[families[fid]["Wife ID"]]["Death"])
+                        print("Error: Family:", fid+":", "US05: Married", date, "After Wife " + families[fid]["Wife ID"] +"'s Death", individuals[families[fid]["Wife ID"]]["Death"])
 
                 families[fid]["Married"] = date
                 flag = ""
@@ -146,7 +146,7 @@ def eval():
             if flag == "DIV":
                 #Check if the couple was married before divorce date
                 if userStories.marriageBeforeDivorce(families[fid]["Married"], date) == False:
-                    print("Error Family:", fid+":", "US04: Divorced", date, "Before Married", families[fid]["Married"])
+                    print("Error: Family:", fid+":", "US04: Divorced", date, "Before Married", families[fid]["Married"])
                 families[fid]["Divorced"] = date
                 flag = ""
 

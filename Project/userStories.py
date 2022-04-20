@@ -301,8 +301,10 @@ def siblingsSpacing(id_, fid, ind_dict, fam_dict):
     bday_tokens = list(map(int, ind_dict[id_]["Birthday"].split("-")))
     twins = False
     for sibling in fam_dict[fid]["Children"]:
+        twins = False
         #get the sibling's bday tokens as integers
         sib_bday_tokens = list(map(int, ind_dict[sibling]["Birthday"].split("-")))
+        #Check if individual has a twin born 1 day apart or same day
         if bday_tokens[0] == sib_bday_tokens[0] and bday_tokens[1] == sib_bday_tokens[1] and abs(bday_tokens[2] - sib_bday_tokens[2]) <= 1:
             twins = True
         # Use earlier date for calculations
@@ -337,7 +339,6 @@ def siblingsSpacing(id_, fid, ind_dict, fam_dict):
             else:
                 sib_bday_tokens[1] = sib_bday_tokens[1] + 9
                 if compareDates((str(sib_bday_tokens[0])+"-"+"{:02}".format(sib_bday_tokens[1])+"-"+"{:02}".format(sib_bday_tokens[2])), ind_dict[id_]["Birthday"]) == False:
-                    print("same year")
                     if twins == False:
                         return False
 
