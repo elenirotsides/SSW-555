@@ -73,7 +73,7 @@ def eval():
                     individuals[id_] = {"ID": "NA", "Name": "NA", "Gender": "NA", "Birthday": "NA",
                                         "Age": "NA", "Alive": True, "Death": "NA", "Child": "NA", "Spouse": "NA"}
                 else:
-                    print("Error: Individual: US22:", id_, "Duplicate ID was provided")
+                    print("Error: Individual:" +id_+":", "US22:", "Duplicate ID was provided")
 
             elif args[i] == "FAM":
                 fid = tag
@@ -100,9 +100,12 @@ def eval():
         if tag == "DATE":
             # check that the date provided is before the current date
             if userStories.dateBeforeCurrent(args[0] + " " + args[1] + " " + args[2]) == False:
-                print("Error: US01: Date Provided", args[0] + " " + args[1] + " " + args[2], "is in the future to current date")
+                print("Error: US01: Date Provided ", args[0] + " " + args[1] + " " + args[2], "is in the future to current date")
 
             date = args[2] + "-" + months[args[1]] + "-" + args[0]
+            # check if date is legitimate or not
+            if userStories.rejectIllegitimateDates(date) == False:
+                print("Error: US42: Date Provided " + date + " is not legitimate")
             if flag == "DEAT":
 
                 # Check if the death date comes after birthday
@@ -168,10 +171,15 @@ def eval():
             families[fid]["Wife Name"] = individuals[args[0]]["Name"]
 
         if tag == "CHIL":
+            #check if the first name and birthday are unique in the family
             if userStories.uniqueFirstNameInFamily(args[0], fid, individuals, families) == False:
-                print("Error: Family:", args[0]+":", "US25:", "First Name", 
-                    individuals[id_]["Name"].split()[0], "and Birthday", 
-                    individuals[id_]["Birthday"], "are not unique in family.")
+                print("Error: Family:", fid+":", "US25:", "First Name", 
+                    individuals[args[0]]["Name"].split()[0], "and Birthday", 
+                    individuals[args[0]]["Birthday"], "are not unique in family.")
+            if userStories.siblingsSpacing(args[0], fid, individuals, families) == False:
+                print("Error: Family:", fid+":", "US13:", "Individual "+ args[0] + 
+                    " has sibling(s) with a birthday too close to their birthday", individuals[args[0]]["Birthday"])
+
             families[fid]["Children"] += args
 
 
