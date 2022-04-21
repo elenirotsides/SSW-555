@@ -35,15 +35,15 @@ months = {
     "DEC": 12,
     "Dec": 12
 }
-#Dict to store months with 31 days
+# Dict to store months with 31 days
 thirty_one = {
-    "01":0,
-    "03":0,
-    "05":0,
-    "07":0,
-    "08":0,
-    "10":0,
-    "12":0,
+    "01": 0,
+    "03": 0,
+    "05": 0,
+    "07": 0,
+    "08": 0,
+    "10": 0,
+    "12": 0,
 }
 
 
@@ -297,24 +297,25 @@ def siblingsSpacing(id_, fid, ind_dict, fam_dict):
         @returns True if properly spaced
         @returns False if not
     """
-    #get the individual's bday tokens as integers
+    # get the individual's bday tokens as integers
     bday_tokens = list(map(int, ind_dict[id_]["Birthday"].split("-")))
     twins = False
     for sibling in fam_dict[fid]["Children"]:
         twins = False
-        #get the sibling's bday tokens as integers
-        sib_bday_tokens = list(map(int, ind_dict[sibling]["Birthday"].split("-")))
-        #Check if individual has a twin born 1 day apart or same day
+        # get the sibling's bday tokens as integers
+        sib_bday_tokens = list(
+            map(int, ind_dict[sibling]["Birthday"].split("-")))
+        # Check if individual has a twin born 1 day apart or same day
         if bday_tokens[0] == sib_bday_tokens[0] and bday_tokens[1] == sib_bday_tokens[1] and abs(bday_tokens[2] - sib_bday_tokens[2]) <= 1:
             twins = True
         # Use earlier date for calculations
-        #If true current individual's birthday comes before sibling's
+        # If true current individual's birthday comes before sibling's
         if compareDates(ind_dict[id_]["Birthday"], ind_dict[sibling]["Birthday"]) == True:
-            
+
             # finding next closest date that sibling can be born
             # if current month + 9 is greater than 12 roll into next year and compare
             if bday_tokens[1] + 9 > 12:
-                bday_tokens[1] = (bday_tokens[1]+9)%12
+                bday_tokens[1] = (bday_tokens[1]+9) % 12
                 bday_tokens[0] = bday_tokens[0] + 1
                 if compareDates((str(bday_tokens[0])+"-"+"{:02}".format(bday_tokens[1])+"-"+"{:02}".format(bday_tokens[2])), ind_dict[sibling]["Birthday"]) == False:
                     if twins == False:
@@ -325,12 +326,12 @@ def siblingsSpacing(id_, fid, ind_dict, fam_dict):
                 if compareDates((str(bday_tokens[0])+"-"+"{:02}".format(bday_tokens[1])+"-"+"{:02}".format(bday_tokens[2])), ind_dict[sibling]["Birthday"]) == False:
                     if twins == False:
                         return False
-        #if current sibling's birthday comes before indivudual's
+        # if current sibling's birthday comes before indivudual's
         else:
             # finding next closest date that sibling can be born
             # if current month + 9 is greater than 12 roll into next year and compare
             if sib_bday_tokens[1] + 9 > 12:
-                sib_bday_tokens[1] = (sib_bday_tokens[1]+9)%12
+                sib_bday_tokens[1] = (sib_bday_tokens[1]+9) % 12
                 sib_bday_tokens[0] = sib_bday_tokens[0] + 1
                 if compareDates((str(sib_bday_tokens[0])+"-"+"{:02}".format(sib_bday_tokens[1])+"-"+"{:02}".format(sib_bday_tokens[2])), ind_dict[id_]["Birthday"]) == False:
                     if twins == False:
@@ -344,6 +345,30 @@ def siblingsSpacing(id_, fid, ind_dict, fam_dict):
 
     # all siblings were properly spaced apart
     return True
+
+
+"""
+****************************************************************
+User Story 14: Multiple births <= 5
+Author: Eleni Rotsides
+"""
+
+
+def no_more_than_5_births(individual_dict, families_dict):
+    """No more than five siblings should be born at the same time. Returns an error for every family where this rule is being violated."""
+    errors_to_be_printed = ''
+    for famID, family in families_dict.items():
+        birthdays = {}
+        if len(family["Children"]) >= 5:
+            for child in family["Children"]:
+                if birthdays.get(individual_dict[child]["Birthday"]) == None:
+                    birthdays[individual_dict[child]["Birthday"]] = 1
+                else:
+                    birthdays[individual_dict[child]["Birthday"]] += 1
+        for i, num_birthdays in birthdays.items():
+            if num_birthdays >= 5:
+                errors_to_be_printed += f"Error: FAMILY: US14: {famID}: No more than five siblings should be born at the same time.\n"
+    return errors_to_be_printed
 
 
 """
@@ -468,31 +493,41 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
     husband_father_id = ""
     husband_mother_id = ""
     wife_father_id = ""
-    wife_mother_id = ""  
+    wife_mother_id = ""
 
-    husband_family_id = individual_dict[husband_id]["Child"]            # Get the family that the husband is in
+    # Get the family that the husband is in
+    husband_family_id = individual_dict[husband_id]["Child"]
 
     if (husband_family_id != 'NA'):
         for person in family_dict[husband_family_id]["Children"]:
-            husband_siblings.append(person)                         # Add to list of husband_siblings
-        husband_siblings.remove(husband_id)                         # Remove the husband from the list of his own siblings
-        husband_father_id = family_dict[husband_family_id]["Husband ID"] # Get husbands father
-        husband_mother_id = family_dict[husband_family_id]["Wife ID"]    # Get husbands mother
+            # Add to list of husband_siblings
+            husband_siblings.append(person)
+        # Remove the husband from the list of his own siblings
+        husband_siblings.remove(husband_id)
+        # Get husbands father
+        husband_father_id = family_dict[husband_family_id]["Husband ID"]
+        # Get husbands mother
+        husband_mother_id = family_dict[husband_family_id]["Wife ID"]
 
-    wife_family_id = individual_dict[wife_id]["Child"]            # Get the family that the wife is in
+    # Get the family that the wife is in
+    wife_family_id = individual_dict[wife_id]["Child"]
 
     if (wife_family_id != 'NA'):
         for person in family_dict[wife_family_id]["Children"]:
-            wife_siblings.append(person)                                # Add to list of wife_siblings
-        wife_siblings.remove(wife_id)                                 # Remove the wife from the list of her own siblings
-        wife_father_id = family_dict[wife_family_id]["Husband ID"]   # Get wifes father
-        wife_mother_id = family_dict[wife_family_id]["Wife ID"]      #Get wifes mother
+            # Add to list of wife_siblings
+            wife_siblings.append(person)
+        # Remove the wife from the list of her own siblings
+        wife_siblings.remove(wife_id)
+        # Get wifes father
+        wife_father_id = family_dict[wife_family_id]["Husband ID"]
+        # Get wifes mother
+        wife_mother_id = family_dict[wife_family_id]["Wife ID"]
 
     # Check if the husband is the uncle of the wife
     if (wife_father_id in husband_siblings) or (wife_mother_id in husband_siblings):
         return True
 
-    #Checks if the wife is the aunt of the husband
+    # Checks if the wife is the aunt of the husband
     if (husband_father_id in wife_siblings) or (husband_mother_id in wife_siblings):
         return True
 
@@ -637,7 +672,7 @@ def list_living_married(ind_dict):
         if (ind_dict[person]["Spouse"] != 'NA'):
             if (ind_dict[person]["Death"] == 'NA'):
                 living_married_list.append(ind_dict[person]["Name"])
-    
+
     return living_married_list
 
 
@@ -722,7 +757,7 @@ def orphaned_children(families_dict, individuals_dict):
     in a GEDCOM file."""
 
     orphan_list = []
-    
+
     for family in families_dict.values():
         if len(family["Children"]) != 0:
             for individual in individuals_dict.values():
@@ -739,7 +774,7 @@ def orphaned_children(families_dict, individuals_dict):
                             child_indi = individual
                             if int(child_indi["Age"]) < 18:
                                 orphan_list.append(child_indi['Name'])
-                        
+
     if len(orphan_list) == 0:
         return False
     else:
@@ -756,9 +791,9 @@ Author: Joshua Hector
 def large_age_diff(families_dict, individuals_dict):
     """List all couples who were married when the older 
     spouse was more than twice as old as the younger spouse. """
-    
+
     couples = []
-    
+
     for family in families_dict.values():
         married_date = family['Married'].split("-")[0]
         for individual in individuals_dict.values():
@@ -768,18 +803,18 @@ def large_age_diff(families_dict, individuals_dict):
             if family["Wife ID"] == individual["ID"]:
                 wife = individual
                 wife_birth_date = wife["Birthday"].split("-")[0]
-                
+
         husband_age_when_married = int(married_date) - int(husband_birth_date)
         wife_age_when_married = int(married_date) - int(wife_birth_date)
-        
+
         if (husband_age_when_married / wife_age_when_married) > 2 or (wife_age_when_married / husband_age_when_married) > 2:
             couples.append(husband["Name"])
             couples.append(wife["Name"])
-                
+
     if len(couples) == 0:
         return False
     else:
-        return couples 
+        return couples
 
 
 """
@@ -799,33 +834,31 @@ def rejectIllegitimateDates(date):
     """
     d_tokens = date.split("-")
     is_leap = False
-    #check for incorrect month or day number
+    # check for incorrect month or day number
     if int(d_tokens[1]) > 12 or int(d_tokens[2]) > 31:
         return False
-    #check if year divides by 4 for leap year
-    if int(d_tokens[0])%4 == 0:
+    # check if year divides by 4 for leap year
+    if int(d_tokens[0]) % 4 == 0:
         is_leap = True
-    #if this is None then month has only 30 days or is February
+    # if this is None then month has only 30 days or is February
     if thirty_one.get(d_tokens[1]) == None:
-        #if month provided is february and year is not a leap year
+        # if month provided is february and year is not a leap year
         if int(d_tokens[1]) == 2 and is_leap == False:
-            #28 days for non leap year
+            # 28 days for non leap year
             if int(d_tokens[2]) <= 28:
                 return True
-        #if month provided is february and is a leap year
+        # if month provided is february and is a leap year
         elif int(d_tokens[1]) == 2 and is_leap == True:
-            #29 days for leap year
+            # 29 days for leap year
             if int(d_tokens[2]) <= 29:
                 return True
-        #if month provided is not February then it must have 30 days
+        # if month provided is not February then it must have 30 days
         elif int(d_tokens[1]) != 2:
             if int(d_tokens[2]) <= 30:
                 return True
-    #if not None then month provided has 31 days and cannot be February
+    # if not None then month provided has 31 days and cannot be February
     else:
         if int(d_tokens[2]) <= 31:
             return True
-    #if checks are not met, date was illegitimate
+    # if checks are not met, date was illegitimate
     return False
-
-
