@@ -841,7 +841,6 @@ class TestLargeAgeDifferences(unittest.TestCase):
                      'F3': {'Children': ['I7'], 'Married': '2007-08-18', 'Divorced': 'NA', 'Husband ID': 'I8', 'Wife ID': 'I4', 'Wife Name': 'Elizabeth /Afton/', 'Husband Name': 'Freddy /Fazbear/'}
     }
 
-
     individuals_dict = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 
                        'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 
                        'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
@@ -858,16 +857,68 @@ class TestLargeAgeDifferences(unittest.TestCase):
                        'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
                     }
 
-    def test_no_large_age_diff(self):
-        """Returns list of couples name if they had a large age difference when they were married"""
-        self.assertEqual(userStories
-                         .large_age_diff(TestLargeAgeDifferences.families_dict, TestLargeAgeDifferences.individuals_dict), False)
-
     def test_large_age_diff(self):
         """Returns false if there were no marriage that had a large age difference"""
         self.assertEqual(userStories
+                         .large_age_diff(TestLargeAgeDifferences.families_dict, TestLargeAgeDifferences.individuals_dict), False)
+
+    def test_no_large_age_diff(self):
+        """Returns list of couples name if they had a large age difference when they were married"""
+        self.assertEqual(userStories
                          .large_age_diff(TestLargeAgeDifferences.families_dict2, TestLargeAgeDifferences.individuals_dict2), ['William /Afton/', 'Sabrina /Simmons/'])
 
+        
+"""
+****************************************************************
+User Story 35: List Recent Births
+Author: Joshua Hector
+"""
+
+class test_list_recent_births(unittest.TestCase):
+    def test_recent_births(self):
+        """Returns a list of the names of those who have been born recently"""
+        
+        individuals_dict = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '2022-04-01', 'Age': 0, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}, 
+                       'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '2022-03-20', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "NA"}, 
+                       'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                    }
+        
+        self.assertEqual(userStories.recent_births(individuals_dict), ["William /Afton/", "Sabrina /Simmons/"])
+
+    def test_no_recent_births(self):
+        """Returns an empty list there is nobody that was born recently"""
+        
+        individuals_dict2 = {'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                    }
+        self.assertEqual(userStories.recent_births(individuals_dict2), [])
+        
+"""
+****************************************************************
+User Story 36: List Recent Deaths
+Author: Joshua Hector
+"""
+
+class test_list_recent_births(unittest.TestCase):
+    def test_recent_deaths(self):
+        """Returns a list of the names of those who have died recently"""
+        
+        individuals_dict = {'I1': {'ID': 'I1', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': '{F2}', 'Spouse': 'NA'}, 
+                       'I2': {'ID': 'I2', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 
+                       'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2022-02-10', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2022-03-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                    }
+        
+        self.assertEqual(userStories.recent_deaths(individuals_dict), ["Freddy /Fazbear/"])
+
+    def test_no_recent_deaths(self):
+        """Returns an empty list there is nobody that has died recently"""
+        
+        individuals_dict2 = {'I4': {'ID': 'I4', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': False, 'Death': '2012-07-24', 'Child': '{F1}', 'Spouse': 'NA'}, 
+                       'I8': {'ID': 'I8', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': False, 'Death': '2012-07-24', 'Child': 'NA', 'Spouse': "{'F3'}"}, 
+                    }
+        self.assertEqual(userStories.recent_deaths(individuals_dict2), [])
 
 """
 ****************************************************************
@@ -900,8 +951,6 @@ class test_rejectIllegitimateDates(unittest.TestCase):
     def test_rejectIllegitimateDates6(self):
         result = userStories.rejectIllegitimateDates("1984-09-39")
         self.assertEqual(result, False)
-
-
 
 if __name__ == '__main__':
     unittest.main()

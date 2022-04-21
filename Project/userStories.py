@@ -70,6 +70,34 @@ def compareDates(date1, date2):
                 return True
     return False
 
+def days_difference(date1, date2):
+    # Helper function to determine the amount of days are between the two dates
+    # Dates provided must be in YYYY-MM-DD format
+    
+    # year for the first date
+    year1= int(date1.split('-')[0])
+    
+    # month for the first date
+    month1= int(date1.split('-')[1])
+    
+    # day for the first date
+    day1= int(date1.split('-')[2])
+    
+    # if the second date = NONE, takes the current date
+    if date2 == None:
+        year2 = int(datetime.today().strftime("%Y"))
+        month2 = int(datetime.today().strftime("%m"))
+        day2 = int(datetime.today().strftime("%d"))
+    else:
+        year2=int(date2.split('-')[0])
+        month2= int(date2.split('-')[1])
+        day2= int(date2.split('-')[2])
+    
+    return abs(((year2 - year1)* 365) + ((month2 - month1)* 30) + (day2 - day1))
+
+    # 2020 - 09 - 11
+    # 2020 - 10 - 01
+
 
 """
 ****************************************************************
@@ -781,13 +809,63 @@ def large_age_diff(families_dict, individuals_dict):
     else:
         return couples 
 
+"""
+****************************************************************
+User Story 36: List recent births
+Author: Joshua Hector
+"""
+
+def recent_births(individuals_dict):
+    """List all people in a GEDCOM file who were born in the last 30 days"""
+
+    # Expects given dates to be in the format "YYYY-MM-DD"
+    
+    recent_births = []
+    no_birthdays = []
+
+    # Creating birth date from substrings of birth
+    for individual in individuals_dict.values():
+        if (individual["Birthday"] == "NA"):
+            no_birthdays.append(individual["Name"])
+        else:
+            birthday = individual["Birthday"]
+            day_difference = days_difference(birthday, None)
+            if day_difference <= 30:
+                recent_births.append(individual["Name"])
+
+    return recent_births
+    
+"""
+****************************************************************
+User Story 35: List recent deaths
+Author: Joshua Hector
+"""
+
+def recent_deaths(individuals_dict):
+    """List all people in a GEDCOM file who died in the last 30 days"""
+
+    # Expects given dates to be in the format "YYYY-MM-DD"
+    
+    recent_deaths = []
+    no_deaths = []
+
+    # Creating birth date from substrings of birth
+    for individual in individuals_dict.values():
+        if (individual["Death"] == "NA"):
+            no_deaths.append(individual["Name"])
+        else:
+            death = individual["Death"]
+            day_difference = days_difference(death, None)
+            if day_difference <= 30:
+                recent_deaths.append(individual["Name"])
+
+    return recent_deaths
 
 """
 ****************************************************************
 User Story 42: Reject Illegitimate Dates
 Author: Dave Taveras
 """
-
 
 def rejectIllegitimateDates(date):
     """
@@ -827,5 +905,3 @@ def rejectIllegitimateDates(date):
             return True
     #if checks are not met, date was illegitimate
     return False
-
-
