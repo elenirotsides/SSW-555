@@ -35,6 +35,16 @@ months = {
     "DEC": 12,
     "Dec": 12
 }
+#Dict to store months with 31 days
+thirty_one = {
+    "01":0,
+    "03":0,
+    "05":0,
+    "07":0,
+    "08":0,
+    "10":0,
+    "12":0,
+}
 
 
 def compareDates(date1, date2):
@@ -170,7 +180,7 @@ def birth_before_death(birthDate, deathDate):
 
 """
 ****************************************************************
-User Story 4: Marriage Before Divorce
+User Story 04: Marriage Before Divorce
 Author: Dave Taveras
 """
 
@@ -230,6 +240,37 @@ def is_divorce_before_death(divorce_date, death_date_husb, death_date_wife,):
 
 """
 ****************************************************************
+User Story 07: Less than 150 years old
+Author: Eleni Rotsides
+"""
+
+
+def is_less_than_150(birth, current, death):
+    """Death should be less than 150 years after birth for dead people, and
+    current date should be less than 150 years after birth for all living people
+    returns boolean"""
+
+    # Expects given dates to be in the format "YYYY-MM-DD"
+
+    # Creating birth date from substrings of birth
+    b_tokens = birth.split("-")
+
+    # Creating current date from substrings of current
+    c_tokens = current.split("-")
+
+    # Creating death date from substrings of death
+    d_tokens = death.split("-")
+
+    if death != "NA" and birth != "NA":
+        return int(d_tokens[0]) < (150 + int(b_tokens[0]))
+    elif current != "NA":
+        return int(c_tokens[0]) < (150 + int(b_tokens[0]))
+    else:
+        return "Not enough information supplied"
+
+
+"""
+****************************************************************
 User Story 10: Marriage Before Age of 14
 Author: Joshua Hector
 """
@@ -272,33 +313,87 @@ def parents_not_too_old(motherChildren, fatherChildren, mother_age, father_age):
 
 """
 ****************************************************************
-User Story 7: Less than 150 years old
-Author: Eleni Rotsides
+User Story 13: Siblings Spacing
+Author: Dave Taveras
 """
 
 
-def is_less_than_150(birth, current, death):
-    """Death should be less than 150 years after birth for dead people, and
-    current date should be less than 150 years after birth for all living people
-    returns boolean"""
+def siblingsSpacing(id_, fid, ind_dict, fam_dict):
+    """
+        This function checks to see if the birth of siblings
+        in a family is at 1 day or 9 months apart
+        @returns True if properly spaced
+        @returns False if not
+    """
+    #get the individual's bday tokens as integers
+    bday_tokens = list(map(int, ind_dict[id_]["Birthday"].split("-")))
+    twins = False
+    for sibling in fam_dict[fid]["Children"]:
+        twins = False
+        #get the sibling's bday tokens as integers
+        sib_bday_tokens = list(map(int, ind_dict[sibling]["Birthday"].split("-")))
+        #Check if individual has a twin born 1 day apart or same day
+        if bday_tokens[0] == sib_bday_tokens[0] and bday_tokens[1] == sib_bday_tokens[1] and abs(bday_tokens[2] - sib_bday_tokens[2]) <= 1:
+            twins = True
+        # Use earlier date for calculations
+        #If true current individual's birthday comes before sibling's
+        if compareDates(ind_dict[id_]["Birthday"], ind_dict[sibling]["Birthday"]) == True:
+            
+            # finding next closest date that sibling can be born
+            # if current month + 9 is greater than 12 roll into next year and compare
+            if bday_tokens[1] + 9 > 12:
+                bday_tokens[1] = (bday_tokens[1]+9)%12
+                bday_tokens[0] = bday_tokens[0] + 1
+                if compareDates((str(bday_tokens[0])+"-"+"{:02}".format(bday_tokens[1])+"-"+"{:02}".format(bday_tokens[2])), ind_dict[sibling]["Birthday"]) == False:
+                    if twins == False:
+                        return False
+            # if current month + 9 is not greater than 12, add months and compare
+            else:
+                bday_tokens[1] = bday_tokens[1] + 9
+                if compareDates((str(bday_tokens[0])+"-"+"{:02}".format(bday_tokens[1])+"-"+"{:02}".format(bday_tokens[2])), ind_dict[sibling]["Birthday"]) == False:
+                    if twins == False:
+                        return False
+        #if current sibling's birthday comes before indivudual's
+        else:
+            # finding next closest date that sibling can be born
+            # if current month + 9 is greater than 12 roll into next year and compare
+            if sib_bday_tokens[1] + 9 > 12:
+                sib_bday_tokens[1] = (sib_bday_tokens[1]+9)%12
+                sib_bday_tokens[0] = sib_bday_tokens[0] + 1
+                if compareDates((str(sib_bday_tokens[0])+"-"+"{:02}".format(sib_bday_tokens[1])+"-"+"{:02}".format(sib_bday_tokens[2])), ind_dict[id_]["Birthday"]) == False:
+                    if twins == False:
+                        return False
+            # if current month + 9 is not greater than 12, add months and compare
+            else:
+                sib_bday_tokens[1] = sib_bday_tokens[1] + 9
+                if compareDates((str(sib_bday_tokens[0])+"-"+"{:02}".format(sib_bday_tokens[1])+"-"+"{:02}".format(sib_bday_tokens[2])), ind_dict[id_]["Birthday"]) == False:
+                    if twins == False:
+                        return False
 
-    # Expects given dates to be in the format "YYYY-MM-DD"
+    # all siblings were properly spaced apart
+    return True
 
-    # Creating birth date from substrings of birth
-    b_tokens = birth.split("-")
 
-    # Creating current date from substrings of current
-    c_tokens = current.split("-")
+"""
+****************************************************************
+User Story 15: Fewer than 15 siblings
+Author: Joshua Hector
+"""
 
-    # Creating death date from substrings of death
-    d_tokens = death.split("-")
 
-    if death != "NA" and birth != "NA":
-        return int(d_tokens[0]) < (150 + int(b_tokens[0]))
-    elif current != "NA":
-        return int(c_tokens[0]) < (150 + int(b_tokens[0]))
+def fewer_than_15_siblings(families_dict, family_id):
+    """Returns true if the amount of siblings in a family is less than 15."""
+    # family_list = []
+    family = families_dict.get(family_id)
+
+    # for fam in family["Children"]:
+    #     if len(fam) >= 15:
+    #         family_list.append(fam)
+
+    if len(family["Children"]) > 15:
+        return False
     else:
-        return "Not enough information supplied"
+        return True
 
 
 """
@@ -335,31 +430,10 @@ def male_same_last_name(individuals_dict, families_dict, familyID):
 
 """
 ****************************************************************
-User Story 15: Fewer than 15 siblings
-Author: Joshua Hector
-"""
-
-
-def fewer_than_15_siblings(families_dict, family_id):
-    """Returns true if the amount of siblings in a family is less than 15."""
-    # family_list = []
-    family = families_dict.get(family_id)
-
-    # for fam in family["Children"]:
-    #     if len(fam) >= 15:
-    #         family_list.append(fam)
-
-    if len(family["Children"]) > 15:
-        return False
-    else:
-        return True
-
-
-"""
-****************************************************************
 User Story 17: No marriages to descendants
 Author: Joshua Hector
 """
+
 
 def no_marriage_to_descendants(families_dict):
     """Returns True if there are no parents that are married to their descendants."""
@@ -374,11 +448,39 @@ def no_marriage_to_descendants(families_dict):
     else:
         return True
 
+
+"""
+****************************************************************
+User Story 18: Siblings should not marry
+Author: Eleni Rotsides
+"""
+
+
+def is_siblings_married(individuals_dict, families_dict):
+    """Checks every entry in families_dict and individuals_dict and ensures that
+    marriage is not between siblings. Raises ValueError if siblings are married and
+    returns False if all marriages are good."""
+
+    for index, family in families_dict.items():
+        if family["Children"] != []:
+            children = family["Children"]
+
+            for child in children:
+                individual = individuals_dict.get(child)
+
+                for ind, family in families_dict.items():
+                    if individual["Spouse"] == ("{'"+ind+"'}"):
+                        raise ValueError(
+                            "Error: FAMILY: US18: Siblings should not be married.")
+    return False
+
+
 """
 ****************************************************************
 User Story 20: Aunts and Uncles
 Author: Julio Lora
 """
+
 
 def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
     """
@@ -424,30 +526,148 @@ def aunts_and_uncles(husband_id, wife_id, family_dict, individual_dict):
 
     return False
 
+
 """
 ****************************************************************
-User Story 18: Siblings should not marry
-Author: Eleni Rotsides
+User Story 21: Correct Gender Roles
+Author: Julio Lora
 """
 
 
-def is_siblings_married(individuals_dict, families_dict):
-    """Checks every entry in families_dict and individuals_dict and ensures that
-    marriage is not between siblings. Raises ValueError if siblings are married and
-    returns False if all marriages are good."""
+def correct_gender_roles(fam_dict, ind_dict):
+    """
+    This function searches the families dictionary to ensure that each husband is male and each wife is female
 
-    for index, family in families_dict.items():
-        if family["Children"] != []:
-            children = family["Children"]
+    @returns true if the husbands are male and the wifes are female / false if not
 
-            for child in children:
-                individual = individuals_dict.get(child)
+    """
 
-                for ind, family in families_dict.items():
-                    if individual["Spouse"] == ("{'"+ind+"'}"):
-                        raise ValueError(
-                            "Error: FAMILY: US18: Siblings should not be married.")
-    return False
+    husband_ID = ""
+    wife_ID = ""
+
+    for family in fam_dict:
+        husband_ID = fam_dict[family]["Husband ID"]
+        wife_ID = fam_dict[family]["Wife ID"]
+        if (husband_ID != 'NA' and wife_ID != 'NA'):
+            if (ind_dict[husband_ID]["Gender"] != 'M'):
+                return False
+            if (ind_dict[wife_ID]["Gender"] != 'F'):
+                return False
+    return True
+
+
+"""
+****************************************************************
+User Story 22: All ID's Are Unique
+Author: Dave Taveras
+"""
+
+
+def uniqueIds(id_, ind_dict):
+    """
+    This function iterates a dictionary to ensure that the
+    given id is not already present
+
+    @returns true if unique / false if not
+    """
+    for key in ind_dict:
+        if id_ == key:
+            return False
+    return True
+
+
+"""
+****************************************************************
+User Story 23: Unique Name and Birthday
+Author: Dave Taveras
+"""
+
+
+def uniqueNameAndBirthday(name, bday, ind_dict):
+    """
+    This function iterates the dictionary to ensure that
+    the name and birthday of the individual with the given id
+    is unique.
+
+    @returns true if unique / false if not
+
+    """
+
+    for key, value in ind_dict.items():
+        if value["Name"] == name and value["Birthday"] == bday:
+            return False
+    return True
+
+
+"""
+****************************************************************
+User Story 25: Unique First Name in Family
+Author: Dave Taveras
+"""
+
+
+def uniqueFirstNameInFamily(id_, fid, ind_dict, fam_dict):
+    """
+    This function searches the individuals dictionary with the id's
+    provided from the familiies dictionary to ensure that each first name
+    and birthday is unique in that family.
+
+    @returns true if unique / false if not
+
+    """
+
+    name = ind_dict[id_]["Name"].split()[0]
+    bday = ind_dict[id_]["Birthday"]
+
+    for child in fam_dict[fid]["Children"]:
+        if name == ind_dict[child]["Name"].split()[0] and bday == ind_dict[child]["Birthday"]:
+            return False
+    return True
+
+
+"""
+****************************************************************
+User Story 29: List Deceased
+Author: Julio Lora
+"""
+
+
+def list_deceased(ind_dict):
+    """
+    This function iterates the dictionary and returns a list of all deceased people
+
+    @returns list of deceased people
+
+    """
+    deceased_list = []
+    for person in ind_dict:
+        if (ind_dict[person]["Death"] != 'NA'):
+            deceased_list.append(ind_dict[person]["Name"])
+    return deceased_list
+
+
+"""
+****************************************************************
+User Story 30: List Living Married
+Author: Julio Lora
+"""
+
+
+def list_living_married(ind_dict):
+    """
+    This function iterates the dictionary and returns a list of all people who are living and married
+
+    @returns list of people who are living and married
+
+    """
+    living_married_list = []
+    for person in ind_dict:
+        if (ind_dict[person]["Spouse"] != 'NA'):
+            if (ind_dict[person]["Death"] == 'NA'):
+                living_married_list.append(ind_dict[person]["Name"])
+    
+    return living_married_list
+
 
 """
 ****************************************************************
@@ -483,73 +703,6 @@ def list_living_single(individuals_dict, families_dict):
         listOfSingletons += f'{person["Name"]} is over the age of 30 and has never been married.\n'
 
     return listOfSingletons
-      
-"""
-****************************************************************
-User Story 22: All ID's Are Unique
-Author: Dave Taveras
-"""
-
-def uniqueIds(id_, ind_dict):
-    """
-    This function iterates a dictionary to ensure that the
-    given id is not already present
-
-    @returns true if unique / false if not
-    """
-    for key in ind_dict:
-        if id_ == key:
-            return False
-    return True
-
-
-"""
-****************************************************************
-User Story 23: uniqueNameAndBirthday
-Author: Dave Taveras
-"""
-
-
-def uniqueNameAndBirthday(name, bday, ind_dict):
-    """
-    This function iterates the dictionary to ensure that
-    the name and birthday of the individual with the given id
-    is unique.
-
-    @returns true if unique / false if not
-
-    """
-
-    for key, value in ind_dict.items():
-        if value["Name"] == name and value["Birthday"] == bday:
-            return False
-    return True
-
-
-"""
-****************************************************************
-User Story 25: uniqueFirstNameInFamily
-Author: Dave Taveras
-"""
-
-
-def uniqueFirstNameInFamily(id_, fid, ind_dict, fam_dict):
-    """
-    This function searches the individuals dictionary with the id's
-    provided from the familiies dictionary to ensure that each first name
-    and birthday is unique in that family.
-
-    @returns true if unique / false if not
-
-    """
-
-    name = ind_dict[id_]["Name"].split()[0]
-    bday = ind_dict[id_]["Birthday"]
-
-    for child in fam_dict[fid]["Children"]:
-        if name == ind_dict[child]["Name"].split()[0] and bday == ind_dict[child]["Birthday"]:
-            return False
-    return True
 
 
 """
@@ -583,12 +736,14 @@ def list_multiple_births(individuals_dict):
         for person in people:
             listOfMultipleBirths += f'{person["Name"]} '
     return listOfMultipleBirths
-  
+
+
 """
 ****************************************************************
 User Story 33: Orphaned Children
 Author: Joshua Hector
 """
+
 
 def orphaned_children(families_dict, individuals_dict):
     """List all orphaned children (both parents dead and child < 18 years old) 
@@ -618,11 +773,13 @@ def orphaned_children(families_dict, individuals_dict):
     else:
         return orphan_list
 
+
 """
 ****************************************************************
 User Story 34: Large Age Differences
 Author: Joshua Hector
 """
+
 
 def large_age_diff(families_dict, individuals_dict):
     """List all couples who were married when the older 
@@ -651,73 +808,6 @@ def large_age_diff(families_dict, individuals_dict):
         return False
     else:
         return couples 
-
-"""
-****************************************************************
-User Story 21: Correct Gender Roles
-Author: Julio Lora
-"""
-
-
-def correct_gender_roles(fam_dict, ind_dict):
-    """
-    This function searches the families dictionary to ensure that each husband is male and each wife is female
-
-    @returns true if the husbands are male and the wifes are female / false if not
-
-    """
-
-    husband_ID = ""
-    wife_ID = ""
-
-    for family in fam_dict:
-        husband_ID = fam_dict[family]["Husband ID"]
-        wife_ID = fam_dict[family]["Wife ID"]
-        if (husband_ID != 'NA' and wife_ID != 'NA'):
-            if (ind_dict[husband_ID]["Gender"] != 'M'):
-                return False
-            if (ind_dict[wife_ID]["Gender"] != 'F'):
-                return False
-    return True
-"""
-****************************************************************
-User Story 29: List Deceased
-Author: Julio Lora
-"""
-
-def list_deceased(ind_dict):
-    """
-    This function iterates the dictionary and returns a list of all deceased people
-
-    @returns list of deceased people
-
-    """
-    deceased_list = []
-    for person in ind_dict:
-        if (ind_dict[person]["Death"] != 'NA'):
-            deceased_list.append(ind_dict[person]["Name"])
-    return deceased_list
-
-"""
-****************************************************************
-User Story 30: List Living Married
-Author: Julio Lora
-"""
-
-def list_living_married(ind_dict):
-    """
-    This function iterates the dictionary and returns a list of all people who are living and married
-
-    @returns list of people who are living and married
-
-    """
-    living_married_list = []
-    for person in ind_dict:
-        if (ind_dict[person]["Spouse"] != 'NA'):
-            if (ind_dict[person]["Death"] == 'NA'):
-                living_married_list.append(ind_dict[person]["Name"])
-    
-    return living_married_list
 
 """
 ****************************************************************
@@ -770,3 +860,48 @@ def recent_deaths(individuals_dict):
                 recent_deaths.append(individual["Name"])
 
     return recent_deaths
+
+"""
+****************************************************************
+User Story 42: Reject Illegitimate Dates
+Author: Dave Taveras
+"""
+
+def rejectIllegitimateDates(date):
+    """
+    This function checks to see if a provided date is
+    legitimate or not
+    @returns false if not legitimate
+    @returns true if legitimate
+
+    """
+    d_tokens = date.split("-")
+    is_leap = False
+    #check for incorrect month or day number
+    if int(d_tokens[1]) > 12 or int(d_tokens[2]) > 31:
+        return False
+    #check if year divides by 4 for leap year
+    if int(d_tokens[0])%4 == 0:
+        is_leap = True
+    #if this is None then month has only 30 days or is February
+    if thirty_one.get(d_tokens[1]) == None:
+        #if month provided is february and year is not a leap year
+        if int(d_tokens[1]) == 2 and is_leap == False:
+            #28 days for non leap year
+            if int(d_tokens[2]) <= 28:
+                return True
+        #if month provided is february and is a leap year
+        elif int(d_tokens[1]) == 2 and is_leap == True:
+            #29 days for leap year
+            if int(d_tokens[2]) <= 29:
+                return True
+        #if month provided is not February then it must have 30 days
+        elif int(d_tokens[1]) != 2:
+            if int(d_tokens[2]) <= 30:
+                return True
+    #if not None then month provided has 31 days and cannot be February
+    else:
+        if int(d_tokens[2]) <= 31:
+            return True
+    #if checks are not met, date was illegitimate
+    return False
