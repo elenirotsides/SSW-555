@@ -69,6 +69,20 @@ fam_13 = {"f1": {"Children": ["i1"]},
        "f6": {"Children": ["i6"]},
        "f7": {"Children": ["i7"]}}
 
+#used to test US11: no_bigamy
+
+dict_11 = {"i1": {"Death":"NA"},
+         "i2": {"Death":"2000-04-01"},
+         "i3": {"Death":"NA"},
+         "i4": {"Death":"2010-03-03"},
+         "i5": {"Death":"NA"},
+         "i6": {"Death":"NA"}}
+
+fam_11 = {"f1": {"Married":"1990-09-06","Divorced":"NA","Husband ID": "i1", "Wife ID": "i2"},
+       "f2": {"Married":"2005-11-18","Divorced":"NA","Husband ID": "i4", "Wife ID": "i3"},
+       "f3": {"Married":"2002","Divorced":"2011-07-08","Husband ID": "i5", "Wife ID": "i6"}}
+       
+
 # The following dictionary objects are individual and family dictionaries to be used throughout various test cases
 individuals_dict = {'I1': {'ID': 'NA', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': 'F2', 'Spouse': 'NA'}, 'I2': {'ID': 'NA', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 'I3': {'ID': 'NA', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I4': {'ID': 'NA', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I5': {'ID': 'NA', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I6': {'ID': 'NA', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 'I7': {'ID': 'NA', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': 'F3', 'Spouse': 'NA'}, 'I8': {'ID': 'NA', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F3'}"}, 'I9': {'ID': 'NA', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': 'F4', 'Spouse': 'NA'}}
@@ -344,6 +358,27 @@ class test_marriageBefore14(unittest.TestCase):
         """Returns False if the divorce happened after the death of both spouses"""
         self.assertEqual(userStories.marriage_before_14(
             "NA", datetime.date(1999, 5, 27), datetime.date(1999, 4, 27)), "NA")
+
+
+"""
+****************************************************************
+User Story 11: No Bigamy
+Author: Eleni Rotsides
+"""
+
+
+class test_no_bigamy(unittest.TestCase):
+    def test_no_bigamy1(self):
+        result = userStories.no_bigamy(fam_11, dict_11, "i1", "HUSB", "2001-07-23")
+        self.assertTrue(result)
+
+    def test_no_bigamy2(self):
+        result = userStories.no_bigamy(fam_11, dict_11, "i3", "WIFE", "2009-08-01")
+        self.assertFalse(result)
+
+    def test_no_bigamy3(self):
+        result = userStories.no_bigamy(fam_11, dict_11, "i5", "HUSB", "2007-01-025")
+        self.assertFalse(result)
 
 
 """

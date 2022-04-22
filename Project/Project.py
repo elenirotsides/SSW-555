@@ -137,8 +137,15 @@ def eval():
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Husband ID"]]["Death"]) == False:
                         print("Error: Family:", fid+":", "US05: Married", date, "After Husband " + families[fid]["Husband ID"] +"'s Death", individuals[families[fid]["Husband ID"]]["Death"])
 
+                if individuals[families[fid]["Wife ID"]]["Alive"] == False:
                     if userStories.marriageBeforeDeath(date, individuals[families[fid]["Wife ID"]]["Death"]) == False:
                         print("Error: Family:", fid+":", "US05: Married", date, "After Wife " + families[fid]["Wife ID"] +"'s Death", individuals[families[fid]["Wife ID"]]["Death"])
+
+                if userStories.no_bigamy(families, individuals, families[fid]["Husband ID"], "HUSB", date) == False:
+                    print("Error: Individual: " + families[fid]["Husband ID"]+":", "US11:", "Husband has committed bigamy")
+                #check wife
+                if userStories.no_bigamy(families, individuals, families[fid]["Wife ID"], "WIFE", date) == False:
+                    print("Error: Individual: " + families[fid]["Wife ID"]+":", "US11:", "Wife has committed bigamy")
 
                 families[fid]["Married"] = date
                 flag = ""

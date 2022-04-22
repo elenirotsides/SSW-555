@@ -266,6 +266,40 @@ def marriage_before_14(marriage_date, birth_date_husb, birth_date_wife):
         return (marriage_year - birth_year_wife > 14) & (marriage_year - birth_year_husb > 14)
 
 
+
+"""
+****************************************************************
+User Story 11: No Bigamy
+Author: Eleni Rotsides
+"""
+
+
+def no_bigamy(families, ind_dict, id_, tag, date):
+    for families, values in families.items():
+        if tag == "HUSB":
+            so_id = values["Wife ID"]
+        else:
+            so_id = values["Husband ID"]
+        if values["Husband ID"] == id_ or values["Wife ID"] == id_:
+            #Check if divorced is not NA and not marriage since you have to be married to divorce
+            if values["Divorced"] != "NA":
+            # checks if provided date comes before divorce if true, bigamy occurred
+                if compareDates(date, values["Divorced"]) == True:
+                    return False
+            #if married date is not NA but divorce is NA then check if the SO has died
+            if values["Married"] != "NA" and values["Divorced"] == "NA":
+                if ind_dict[so_id]["Death"] != "NA":
+                # checks to see if date provided comes before the death of the SO, if so bigamy occurred
+                    if compareDates(date, ind_dict[so_id]["Death"]) == True:
+                        return False
+                else:
+                    #if the SO has not died, check that the provided date comes after the previous marriage date 
+                    if values["Married"] != date:
+                        if compareDates(values["Married"],date) == True:
+                            return False
+    return True
+
+
 """
 ****************************************************************
 User Story 12: Parents are not too old
