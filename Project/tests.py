@@ -1044,6 +1044,46 @@ class test_rejectIllegitimateDates(unittest.TestCase):
         result = userStories.rejectIllegitimateDates("1984-09-39")
         self.assertEqual(result, False)
 
+"""
+****************************************************************
+User Story 8: Birth Before Marriage of Parents
+Author: Julio Lora
+"""
+
+individuals_dict_errors = {'I1': {'ID': 'NA', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': 'F2', 'Spouse': 'NA'}, 'I2': {'ID': 'NA', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 'I3': {'ID': 'NA', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I4': {'ID': 'NA', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I5': {'ID': 'NA', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I6': {'ID': 'NA', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 'I7': {'ID': 'NA', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2006-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': 'F3', 'Spouse': 'NA'}, 'I8': {'ID': 'NA', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F3'}"}, 'I9': {'ID': 'NA', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2000-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': 'F4', 'Spouse': 'NA'}}
+
+class test_birth_before_marriage_of_parents(unittest.TestCase):
+    def test_no_errors(self):
+        """Returns True if they are born after the marriage of parents and not more than 9 months after divorce"""
+        self.assertEqual(userStories.birth_before_marriage_of_parents(
+            families_dict, individuals_dict), True)
+
+    def test_errors(self):
+        """Returns False if they are not born after the marriage of parents and not more than 9 months after divorce"""
+        self.assertEqual(userStories.birth_before_marriage_of_parents(
+            families_dict, individuals_dict_errors), False)
+
+"""
+****************************************************************
+User Story 9: Birth Before Death of Parents
+Author: Julio Lora
+"""
+
+individuals_dict_error = {'I1': {'ID': 'NA', 'Name': 'William /Afton/', 'Gender': 'M', 'Birthday': '1943-01-1', 'Age': 79, 'Alive': True, 'Death': 'NA', 'Child': 'F2', 'Spouse': 'NA'}, 'I2': {'ID': 'NA', 'Name': 'Sabrina /Simmons/', 'Gender': 'F', 'Birthday': '1946-03-4', 'Age': 76, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F1'}"}, 'I3': {'ID': 'NA', 'Name': 'Michael /Afton/', 'Gender': 'M', 'Birthday': '1969-09-16', 'Age': 53, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I4': {'ID': 'NA', 'Name': 'Elizabeth /Afton/', 'Gender': 'F', 'Birthday': '1978-06-5', 'Age': 44, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I5': {'ID': 'NA', 'Name': 'Gregory /Afton/', 'Gender': 'M', 'Birthday': '1973-11-19',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                'Age': 49, 'Alive': True, 'Death': 'NA', 'Child': 'F1', 'Spouse': 'NA'}, 'I6': {'ID': 'NA', 'Name': 'Robert /Fox/', 'Gender': 'M', 'Birthday': '1976-04-29', 'Age': 46, 'Alive': False, 'Death': '2006-07-12', 'Child': 'NA', 'Spouse': "{'F4'}"}, 'I7': {'ID': 'NA', 'Name': 'Montgomery /Fazbear/', 'Gender': 'M', 'Birthday': '2007-12-23', 'Age': 15, 'Alive': True, 'Death': 'NA', 'Child': 'F3', 'Spouse': 'NA'}, 'I8': {'ID': 'NA', 'Name': 'Freddy /Fazbear/', 'Gender': 'M', 'Birthday': '1975-03-17', 'Age': 47, 'Alive': True, 'Death': 'NA', 'Child': 'NA', 'Spouse': "{'F3'}"}, 'I9': {'ID': 'NA', 'Name': 'George /Fox/', 'Gender': 'M', 'Birthday': '2008-01-14', 'Age': 22, 'Alive': True, 'Death': 'NA', 'Child': 'F4', 'Spouse': 'NA'}}
+
+class test_birth_before_death_of_parents(unittest.TestCase):
+    def test_no_error(self):
+        """Returns True if they are born before the death of the mother and within 9 months of the fathers death"""
+        self.assertEqual(userStories.birth_before_death_of_parents(
+            families_dict, individuals_dict), True)
+
+    def test_error(self):
+        """Returns False if they are not born before the death of the mother and within 9 months of the fathers death"""
+        self.assertEqual(userStories.birth_before_death_of_parents(
+            families_dict, individuals_dict_error), False)
+
 
 if __name__ == '__main__':
     unittest.main()

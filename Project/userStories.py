@@ -940,3 +940,77 @@ def rejectIllegitimateDates(date):
             return True
     # if checks are not met, date was illegitimate
     return False
+
+"""
+****************************************************************
+User Story 8: Birth Before Marriage of Parents
+Author: Julio Lora
+"""
+
+
+def birth_before_marriage_of_parents(fam_dict, ind_dict):
+    """
+    This function iterates the dictionary and checks if the children of a family are born
+    after the marriage of the parents
+
+    @returns true if they are born after the marriage of parents and not more than 9 months after divorce
+    @returns false if not
+
+    """
+    for family in fam_dict:
+        family_marriage_date = fam_dict[family]["Married"]
+        family_divorce_date = fam_dict[family]["Divorced"]
+        if (family_marriage_date != "NA"):
+            family_children_list = fam_dict[family]["Children"]
+            for child in family_children_list:
+                child_birth_date = ind_dict[child]["Birthday"]
+                if (compareDates(child_birth_date, family_marriage_date)):
+                    return False
+                if (family_divorce_date != "NA"):
+                    if (days_difference(family_divorce_date,child_birth_date) > 270 and compareDates(family_divorce_date,child_birth_date)):
+                        return False
+
+    return True
+
+"""
+****************************************************************
+User Story 9: Birth Before Death of Parents
+Author: Julio Lora
+"""
+
+
+def birth_before_death_of_parents(fam_dict, ind_dict):
+    """
+    This function iterates the dictionary and checks if the children of a family are born
+    before the death of the mother and before 9 months after death of father
+
+    @returns true if they are born before death of mother and within 9 months of fathers death
+    @returns false if not
+
+    """
+
+    for family in fam_dict:
+
+        family_children_list = fam_dict[family]["Children"]
+
+        mother_id = fam_dict[family]["Wife ID"]
+        if (mother_id != "NA"):
+            mother_death_date = ind_dict[mother_id]["Death"]
+        
+        father_id = fam_dict[family]["Husband ID"]
+        if (father_id != "NA"):
+            father_death_date = ind_dict[father_id]["Death"]
+
+        if (mother_death_date and mother_death_date != "NA"):
+            for child in family_children_list:
+                child_birth_date = ind_dict[child]["Birthday"]
+                if (compareDates(child_birth_date, mother_death_date)):
+                    return False
+
+        if (father_death_date and father_death_date != "NA"):
+            for child in family_children_list:
+                child_birth_date = ind_dict[child]["Birthday"]
+                if (compareDates(father_death_date,child_birth_date) and (days_difference(father_death_date,child_birth_date) > 270)):
+                    return False
+
+    return True
